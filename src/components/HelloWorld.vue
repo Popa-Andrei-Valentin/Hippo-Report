@@ -1,6 +1,11 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
+  <div class="home-container">
+    <div class="info-item">
+      <h1>Home Page</h1>
+    </div>
+    <div class="file-item">
+      <p>Upload excel file here</p>
+    </div>
   </div>
 </template>
 
@@ -19,18 +24,27 @@ export default defineComponent({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+.home-container {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-areas:
+      "info info"
+      "main main"
+      "main main";
+  grid-template-rows: 10% auto;
+  grid-template-columns: auto auto;
+
+  align-items: center;
+  justify-items: center;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+
+.info-item {
+  grid-area: info;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+
+.file-item {
+  grid-area: main;
+  padding: 10rem;
 }
 </style>
