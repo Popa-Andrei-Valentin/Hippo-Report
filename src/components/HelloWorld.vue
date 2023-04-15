@@ -19,7 +19,7 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   data () {
     return {
-      currentFile: new Array()
+      currentFile: new Array() // TODO: fix this error, "[]" returns "never[]" type which creates another errors.
     }
   },
   props: {
@@ -42,7 +42,7 @@ export default defineComponent({
     processFile(e:HTMLInputElement, callback: (arr: object[]) => void) {
       let file = e.target.files[0];
       let reader = new FileReader();
-      reader.onload = function (e: any) {
+      reader.onload = function (e: any) { // TODO: fix "any" type
         let arr: object[] = []
         let data = e.target.result;
         let workbook = XLSX.read(data, {type: "binary"});
