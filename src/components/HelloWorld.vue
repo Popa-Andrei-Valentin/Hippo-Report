@@ -5,18 +5,60 @@
     </div>
     <div class="file-item">
       <p>Upload excel file here</p>
+      <br/>
+      <input type="file" @change="readFile" />
+      <p v-if="currentFile.length > 0">Upload succesful</p>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import * as XLSX from "xlsx"
 import { defineComponent } from 'vue'
 
 export default defineComponent({
+  data () {
+    return {
+      currentFile: new Array()
+    }
+  },
   props: {
     msg: {
       type: String,
       default: ():string => "404: No message found"
+    }
+  },
+  methods: {
+    /**
+     * Read file and save it to currentFile variable.
+     */
+    async readFile(e: HTMLInputElement) {
+      this.processFile(e, this.writeFile)
+    },
+
+    /**
+     * Process xlsx/xls files and transform its content to JSON.
+     */
+    processFile(e:HTMLInputElement, callback: (arr: object[]) => void) {
+      let file = e.target.files[0];
+      let reader = new FileReader();
+      reader.onload = function (e: any) {
+        let arr: object[] = []
+        let data = e.target.result;
+        let workbook = XLSX.read(data, {type: "binary"});
+        workbook.SheetNames.map(sheet => {
+          let rowObj: Array<object> = XLSX.utils.sheet_to_json(workbook.Sheets[sheet])
+          if (rowObj && rowObj.length > 0) {
+            arr.push(rowObj);
+          }
+        })
+        if(arr.length > 0) callback(arr)
+      };
+      reader.readAsArrayBuffer(file);
+    },
+
+    writeFile(arr: object[]) {
+      this.currentFile = [...arr]
     }
   },
 })
