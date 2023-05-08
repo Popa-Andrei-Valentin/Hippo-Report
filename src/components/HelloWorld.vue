@@ -4,10 +4,17 @@
       <h1>Home Page</h1>
     </div>
     <div class="file-item">
-      <p>Upload excel file here</p>
-      <br/>
-      <input type="file" @change="readFile" />
-      <p v-if="currentFile.length > 0">Upload succesful</p>
+
+      <div v-if="currentFile.length < 1">
+          <p>Upload excel file here</p>
+          <br/>
+          <input type="file" @change="readFile" />
+      </div>
+
+      <div v-else-if="currentFile.length > 1">
+          <p>Upload succesful</p>
+      </div>
+
     </div>
   </div>
 </template>
