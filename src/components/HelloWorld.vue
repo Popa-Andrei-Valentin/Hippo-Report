@@ -13,6 +13,7 @@
 
       <div v-else-if="currentFile.length > 1">
           <p>Upload succesful</p>
+          <button @click="calculateTotal">Total Sum</button>
       </div>
 
     </div>
@@ -22,6 +23,7 @@
 <script lang="ts">
 import * as XLSX from "xlsx"
 import { defineComponent } from 'vue'
+import {RestaurantType} from "@/typings/RestaurantType";
 
 export default defineComponent({
   data () {
@@ -66,6 +68,29 @@ export default defineComponent({
 
     writeFile(arr: object[]) {
       this.currentFile = [...arr]
+    },
+
+    /* PROTOTYPE: Calculate total and add up any duplicates, return an object without duplicates.  */
+    calculateTotal():void {
+        let filteredTable: {[key: string]: RestaurantType} = {}
+        let verifiedTables: string[] = [];
+        let total = 0;
+
+        if (this.currentFile[0].length > 0) {
+            this.currentFile[0].map((obj: RestaurantType) => {
+                total = obj["Total"] + total
+                let name = obj["Produs"]
+                if (verifiedTables.length < 1 || verifiedTables.indexOf(name) === -1) {
+                   verifiedTables.push(name);
+                   filteredTable[name] = obj;
+                } else {
+                    filteredTable[name]["Cantitate"] += obj["Cantitate"]
+                    filteredTable[name]["Total"] += obj["Total"]
+                }
+            })
+        }
+
+        console.log({filteredTable, verifiedTables, total});
     }
   },
 })
