@@ -30,7 +30,10 @@ export default defineComponent({
   data () {
     return {
       currentFile: new Array(), // TODO: fix this error, "[]" returns "never[]" type which creates another errors.
-      arrayForExport: new Array()
+      arrayForExport: new Array(),
+      currExcelTotal: {
+          "TOTAL" : 0
+      }
     }
   },
   props: {
@@ -96,6 +99,8 @@ export default defineComponent({
         }
 
         Object.values(filteredTable).forEach(obj => this.arrayForExport.push(obj));
+        this.currExcelTotal["TOTAL"] = total;
+        this.arrayForExport.push(this.currExcelTotal);
     },
 
     /**
