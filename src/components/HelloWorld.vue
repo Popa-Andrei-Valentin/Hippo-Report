@@ -13,6 +13,7 @@
 
       <div v-else-if="currentFile.length > 1">
           <p>Upload succesful</p>
+          <input type="file" @change="readFile" />
           <button @click="calculateTotal">Total Sum</button>
           <button v-if="this.arrayForExport.length > 0" @click="writeExcel">Download</button>
       </div>
@@ -64,7 +65,7 @@ export default defineComponent({
         workbook.SheetNames.map(sheet => {
           let rowObj: Array<object> = XLSX.utils.sheet_to_json(workbook.Sheets[sheet])
           if (rowObj && rowObj.length > 0) {
-            arr.push(rowObj);
+            if(arr.length < 1 || arr.length < rowObj.length) arr = rowObj;
           }
         })
         if(arr.length > 0) callback(arr)
@@ -73,7 +74,7 @@ export default defineComponent({
     },
 
     writeFile(arr: object[]) {
-      this.currentFile = [...arr]
+      this.currentFile.push(...arr)
     },
 
     /**
@@ -84,10 +85,10 @@ export default defineComponent({
         let verifiedTables: string[] = [];
         let total = 0;
 
-        if (this.currentFile[0].length > 0) {
-            this.currentFile[0].map((obj: RestaurantType) => {
+        if (this.currentFile.length > 0) {
+            this.currentFile.map((obj: RestaurantType) => {
                 total = obj["Total"] + total
-                let name = obj["Produs"]
+                let name = obj["Produs"].toLowerCase()
                 if (verifiedTables.length < 1 || verifiedTables.indexOf(name) === -1) {
                    verifiedTables.push(name);
                    filteredTable[name] = obj;
