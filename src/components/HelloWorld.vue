@@ -14,6 +14,7 @@
       <div v-else-if="currentFile.length > 1">
           <p>Upload succesful</p>
           <button @click="calculateTotal">Total Sum</button>
+          <button v-if="this.arrayForExport.length > 0" @click="writeExcel">Download</button>
       </div>
 
     </div>
@@ -23,12 +24,13 @@
 <script lang="ts">
 import * as XLSX from "xlsx"
 import { defineComponent } from 'vue'
-import {RestaurantType} from "@/typings/RestaurantType";
+import { RestaurantType } from "@/typings/RestaurantType";
 
 export default defineComponent({
   data () {
     return {
-      currentFile: new Array() // TODO: fix this error, "[]" returns "never[]" type which creates another errors.
+      currentFile: new Array(), // TODO: fix this error, "[]" returns "never[]" type which creates another errors.
+      arrayForExport: new Array()
     }
   },
   props: {
@@ -38,6 +40,7 @@ export default defineComponent({
     }
   },
   methods: {
+
     /**
      * Read file and save it to currentFile variable.
      */
@@ -70,7 +73,9 @@ export default defineComponent({
       this.currentFile = [...arr]
     },
 
-    /* PROTOTYPE: Calculate total and add up any duplicates, return an object without duplicates.  */
+    /**
+    * PROTOTYPE: Calculate total and add up any duplicates, return an object without duplicates.
+    */
     calculateTotal():void {
         let filteredTable: {[key: string]: RestaurantType} = {}
         let verifiedTables: string[] = [];
@@ -90,7 +95,20 @@ export default defineComponent({
             })
         }
 
-        console.log({filteredTable, verifiedTables, total});
+        Object.values(filteredTable).forEach(obj => this.arrayForExport.push(obj));
+    },
+
+    /**
+     * Export Processed document as excel.
+     */
+    writeExcel(): void {
+        let worksheet = XLSX.utils.json_to_sheet(this.arrayForExport);
+
+        let wb = XLSX.utils.book_new();
+
+        XLSX.utils.book_append_sheet(wb, worksheet, "test");
+
+        XLSX.writeFile(wb,"test.xlsx")
     }
   },
 })
