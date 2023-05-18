@@ -3,4 +3,23 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-createApp(App).use(store).use(router).mount('#app')
+// Vuetify
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+
+// Material Design Icons
+import '@mdi/font/css/materialdesignicons.css' // Ensure you are using css-loader
+const icons = {
+    defaultSet: 'mdi', // This is already the default value - only for display purposes
+}
+
+const vuetify = createVuetify({
+    components,
+    directives,
+   // @ts-ignore
+    icons
+})
+
+createApp(App).use(store).use(router).use(vuetify).mount('#app')
