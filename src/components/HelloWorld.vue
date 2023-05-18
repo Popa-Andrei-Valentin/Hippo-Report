@@ -34,7 +34,8 @@ export default defineComponent({
       arrayForExport: new Array(),
       currExcelTotal: {
           "TOTAL" : 0
-      }
+      },
+      currFileName: ""
     }
   },
   props: {
@@ -78,7 +79,8 @@ export default defineComponent({
     },
 
     /**
-    * PROTOTYPE: Calculate total and add up any duplicates, return an object without duplicates.
+    * PROTOTYPE: Calculate total and add up any duplicates,
+     * Return an object without duplicates.
     */
     calculateTotal():void {
         let filteredTable: {[key: string]: RestaurantType} = {}
