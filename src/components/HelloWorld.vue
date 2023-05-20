@@ -11,16 +11,19 @@
           <input type="file" @change="readFile" />
       </div>
 
-      <div v-else-if="currentFile.length > 1">
-<!--          <button @click="calculateTotal">Total Sum</button>-->
-<!--          <button v-if="this.arrayForExport.length > 0" @click="writeExcel">Download</button>-->
+      <div
+        v-else-if="currentFile.length > 1"
+        class="gridContainer"
+      >
           <ag-grid-vue
-                  v-if="rowsData.length > 0"
-                  class="ag-theme-alpine"
-                  style="height: 500px; width: 80%"
-                  :columnDefs="columnsDef"
-                  :rowData="rowsData"
+            v-if="rowsData.length > 0"
+            class="ag-theme-alpine"
+            style="height: 500px; width: 95%"
+            :columnDefs="columnsDef"
+            :rowData="rowsData"
           ></ag-grid-vue>
+          <!-- <button @click="calculateTotal">Total Sum</button>-->
+          <!-- <button v-if="this.arrayForExport.length > 0" @click="writeExcel">Download</button>-->
       </div>
 
     </div>
@@ -174,11 +177,19 @@ export default defineComponent({
 }
 
 .file-item {
-    align-items: center;
-    justify-items: center;
+  align-items: center;
+  justify-items: center;
   height: 100%;
   width: 100%;
   grid-area: main;
   padding: 2% 0
+}
+
+.gridContainer {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  align-items: center;
+  justify-items: center;
 }
 </style>
