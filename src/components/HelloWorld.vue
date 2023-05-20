@@ -5,23 +5,23 @@
     </div>
     <div class="file-item">
 
-      <div v-if="currentFile.length < 1">
-          <p>Upload excel file here</p>
-          <br/>
-          <input type="file" @change="readFile" />
-      </div>
+<!--      <div v-if="currentFile.length < 1">-->
+<!--          <p>Upload excel file here</p>-->
+<!--          <br/>-->
+<!--          <input type="file" @change="readFile" />-->
+<!--      </div>-->
 
       <div
-        v-else-if="currentFile.length > 1"
         class="gridContainer"
       >
           <ag-grid-vue
-            v-if="rowsData.length > 0"
             class="ag-theme-material"
             style="height: 70vh; width: 95vw"
             :columnDefs="columnsDef"
             :defaultColDef="defaultColDef"
             :rowData="rowsData"
+            :overlayNoRowsTemplate="noRowsOverlay"
+            @gridReady="onGridReady"
           ></ag-grid-vue>
           <!-- <button @click="calculateTotal">Total Sum</button>-->
           <!-- <button v-if="this.arrayForExport.length > 0" @click="writeExcel">Download</button>-->
@@ -58,7 +58,8 @@ export default defineComponent({
       defaultColDef: {
           resizable: true,
           flex: 1
-      }
+      },
+      noRowsOverlay: "<input class='inputOverlay' type='file' @change='() => console.log(this)' />"
     }
   },
   components: {
@@ -160,6 +161,15 @@ export default defineComponent({
 
           this.columnsDef.push(toAdd);
         })
+    },
+
+    /**
+     * Method that is called by AG-Grid when the grid is ready to be mounted to DOM.
+     */
+    onGridReady(): void {
+        let overlayInput = document.querySelector(".inputOverlay");
+        // @ts-ignore
+        if(overlayInput) overlayInput.addEventListener('change', this.readFile) // TODO: FIX TS ERROR FOR QUERY SELECTOR.
     }
   },
 })
@@ -208,5 +218,9 @@ export default defineComponent({
 
 :global(.ag-header-cell-label) {
   justify-content: center;
+}
+
+:global(.inputOverlay) {
+    pointer-events: auto;
 }
 </style>
