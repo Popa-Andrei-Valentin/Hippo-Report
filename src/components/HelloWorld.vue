@@ -14,13 +14,13 @@
       <div v-else-if="currentFile.length > 1">
 <!--          <button @click="calculateTotal">Total Sum</button>-->
 <!--          <button v-if="this.arrayForExport.length > 0" @click="writeExcel">Download</button>-->
-          <v-data-table
-                  v-show="tableItems.length > 0"
-                  :headers="tableColumnHeaders"
-                  :items="tableItems"
-                  item-value="name"
-                  class="elevation-2"
-          ></v-data-table>
+          <ag-grid-vue
+                  v-if="rowsData.length > 0"
+                  class="ag-theme-alpine"
+                  style="height: 500px; width: 80%"
+                  :columnDefs="columnsDef"
+                  :rowData="rowsData"
+          ></ag-grid-vue>
       </div>
 
     </div>
@@ -29,22 +29,29 @@
 
 <script lang="ts">
 import * as XLSX from "xlsx"
-import {defineComponent, h} from 'vue'
+import { defineComponent } from 'vue'
 import { RestaurantType } from "@/typings/RestaurantType";
 import { HeaderType } from "@/typings/DataTableType";
+import {AgGridVue} from "ag-grid-vue3";
+import 'ag-grid-community/styles/ag-grid.css'
+import 'ag-grid-community/styles/ag-theme-alpine.css'
+
 
 export default defineComponent({
   data () {
     return {
       currentFile: new Array(), // TODO: fix this error, "[]" returns "never[]" type which creates another errors.
       arrayForExport: new Array(),
-      tableColumnHeaders: new Array(),
-      tableItems: new Array(),
+      columnsDef: new Array(),
+      rowsData: new Array(),
       currExcelTotal: {
           "TOTAL" : 0
       },
       currFileName: ""
     }
+  },
+  components: {
+      AgGridVue
   },
   props: {
     msg: {
@@ -84,7 +91,7 @@ export default defineComponent({
 
     writeFile(arr: object[]) {
       this.setHeaders(arr[0]);
-      this.tableItems = arr;
+      this.rowsData = arr;
       this.currentFile.push(...arr);
     },
 
@@ -136,13 +143,10 @@ export default defineComponent({
     setHeaders(arr: object) : void {
         Object.keys(arr).map((header: string) => {
           let toAdd: HeaderType = {
-              title: header.toUpperCase(),
-              align: "center",
-              sortable: false,
-              key: header
+              field: header,
           }
 
-          this.tableColumnHeaders.push(toAdd);
+          this.columnsDef.push(toAdd);
         })
     }
   },
@@ -157,10 +161,9 @@ export default defineComponent({
   height: 100%;
   grid-template-areas:
       "info info"
-      "main main"
       "main main";
-  grid-template-rows: 10% auto;
-  grid-template-columns: auto auto;
+  grid-template-rows: 10% 90%;
+  grid-template-columns: 30% 70%;
 
   align-items: center;
   justify-items: center;
@@ -171,6 +174,10 @@ export default defineComponent({
 }
 
 .file-item {
+    align-items: center;
+    justify-items: center;
+  height: 100%;
+  width: 100%;
   grid-area: main;
   padding: 2% 0
 }
