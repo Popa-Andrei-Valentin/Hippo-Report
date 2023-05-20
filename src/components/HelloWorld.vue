@@ -201,4 +201,8 @@ export default defineComponent({
   align-items: center;
   justify-items: center;
 }
+
+:global(.ag-header-cell-label) {
+    justify-content: center;
+}
 </style>
