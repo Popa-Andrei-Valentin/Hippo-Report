@@ -4,9 +4,13 @@
       <h1>Home Page</h1>
     </div>
     <div class="file-item">
+        <div class="grid-buttons">
+            <button>Delete</button>
+            <button>New Table</button>
+        </div>
           <ag-grid-vue
             class="ag-theme-material"
-            style="height: 70vh; width: 95vw"
+            style="height: 70vh; width: 100%"
             :columnDefs="columnsDef"
             :defaultColDef="defaultColDef"
             :rowData="rowsData"
@@ -184,25 +188,31 @@ export default defineComponent({
 }
 
 .file-item {
-  display: grid;
-  align-items: center;
-  justify-items: center;
-  height: 100%;
-  width: 100%;
   grid-area: main;
-  padding: 2% 0
-}
 
-.gridContainer {
-  width: 100%;
-  height: 100%;
   display: grid;
   align-items: center;
   justify-items: center;
+  height: 100%;
+  width: 95%;
+  padding: 2% 0;
+  box-shadow: 0 0 0.75rem #8080803C;
+
+  grid-template-areas:
+    "buttons"
+    "grid";
+  grid-template-rows: 10% 90%;
+  grid-template-columns: 100%;
 }
 
 .ag-theme-material {
-  box-shadow: 0 0 0.75rem #8080803C;
+  grid-area: grid;
+}
+
+.grid-buttons {
+    height: 100%;
+    width: 100%;
+    grid-area: buttons;
 }
 
 :global(.ag-header-cell-label) {
