@@ -18,8 +18,9 @@
           <ag-grid-vue
             v-if="rowsData.length > 0"
             class="ag-theme-alpine"
-            style="height: 500px; width: 95%"
+            style="height: 70vh; width: 95vw"
             :columnDefs="columnsDef"
+            :defaultColDef="defaultColDef"
             :rowData="rowsData"
           ></ag-grid-vue>
           <!-- <button @click="calculateTotal">Total Sum</button>-->
@@ -43,14 +44,21 @@ import 'ag-grid-community/styles/ag-theme-alpine.css'
 export default defineComponent({
   data () {
     return {
+      // ------- XLSX ------- //
       currentFile: new Array(), // TODO: fix this error, "[]" returns "never[]" type which creates another errors.
       arrayForExport: new Array(),
-      columnsDef: new Array(),
-      rowsData: new Array(),
       currExcelTotal: {
           "TOTAL" : 0
       },
-      currFileName: ""
+      currFileName: "",
+
+      // ------- AG-Grid ------- //
+      columnsDef: new Array(),
+      rowsData: new Array(),
+      defaultColDef: {
+          resizable: true,
+          flex: 1
+      }
     }
   },
   components: {
@@ -63,7 +71,7 @@ export default defineComponent({
     }
   },
   methods: {
-
+    // ------- XLSX Methods ------- //
     /**
      * Read file and save it to currentFile variable.
      */
@@ -139,6 +147,7 @@ export default defineComponent({
         XLSX.writeFile(wb,"test.xlsx")
     },
 
+    // ------- AG-Grid Methods------- //
     /**
      * Set the column headers for data-table.
      * @param {Object} arr
