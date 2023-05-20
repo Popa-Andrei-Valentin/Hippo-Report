@@ -4,16 +4,6 @@
       <h1>Home Page</h1>
     </div>
     <div class="file-item">
-
-<!--      <div v-if="currentFile.length < 1">-->
-<!--          <p>Upload excel file here</p>-->
-<!--          <br/>-->
-<!--          <input type="file" @change="readFile" />-->
-<!--      </div>-->
-
-      <div
-        class="gridContainer"
-      >
           <ag-grid-vue
             class="ag-theme-material"
             style="height: 70vh; width: 95vw"
@@ -25,8 +15,6 @@
           ></ag-grid-vue>
           <!-- <button @click="calculateTotal">Total Sum</button>-->
           <!-- <button v-if="this.arrayForExport.length > 0" @click="writeExcel">Download</button>-->
-      </div>
-
     </div>
   </div>
 </template>
@@ -196,6 +184,7 @@ export default defineComponent({
 }
 
 .file-item {
+  display: grid;
   align-items: center;
   justify-items: center;
   height: 100%;
