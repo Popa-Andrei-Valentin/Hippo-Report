@@ -17,7 +17,7 @@
       >
           <ag-grid-vue
             v-if="rowsData.length > 0"
-            class="ag-theme-alpine"
+            class="ag-theme-material"
             style="height: 70vh; width: 95vw"
             :columnDefs="columnsDef"
             :defaultColDef="defaultColDef"
@@ -38,7 +38,7 @@ import { RestaurantType } from "@/typings/RestaurantType";
 import { HeaderType } from "@/typings/DataTableType";
 import {AgGridVue} from "ag-grid-vue3";
 import 'ag-grid-community/styles/ag-grid.css'
-import 'ag-grid-community/styles/ag-theme-alpine.css'
+import 'ag-grid-community/styles/ag-theme-material.css'
 
 
 export default defineComponent({
@@ -202,7 +202,11 @@ export default defineComponent({
   justify-items: center;
 }
 
+.ag-theme-material {
+  box-shadow: 0 0 0.75rem #8080803C;
+}
+
 :global(.ag-header-cell-label) {
-    justify-content: center;
+  justify-content: center;
 }
 </style>
