@@ -12,10 +12,15 @@
       </div>
 
       <div v-else-if="currentFile.length > 1">
-          <p>Upload succesful</p>
-          <input type="file" @change="readFile" />
-          <button @click="calculateTotal">Total Sum</button>
-          <button v-if="this.arrayForExport.length > 0" @click="writeExcel">Download</button>
+<!--          <button @click="calculateTotal">Total Sum</button>-->
+<!--          <button v-if="this.arrayForExport.length > 0" @click="writeExcel">Download</button>-->
+          <v-data-table
+                  v-show="tableItems.length > 0"
+                  :headers="tableColumnHeaders"
+                  :items="tableItems"
+                  item-value="name"
+                  class="elevation-2"
+          ></v-data-table>
       </div>
 
     </div>
@@ -24,14 +29,17 @@
 
 <script lang="ts">
 import * as XLSX from "xlsx"
-import { defineComponent } from 'vue'
+import {defineComponent, h} from 'vue'
 import { RestaurantType } from "@/typings/RestaurantType";
+import { HeaderType } from "@/typings/DataTableType";
 
 export default defineComponent({
   data () {
     return {
       currentFile: new Array(), // TODO: fix this error, "[]" returns "never[]" type which creates another errors.
       arrayForExport: new Array(),
+      tableColumnHeaders: new Array(),
+      tableItems: new Array(),
       currExcelTotal: {
           "TOTAL" : 0
       },
@@ -75,7 +83,9 @@ export default defineComponent({
     },
 
     writeFile(arr: object[]) {
-      this.currentFile.push(...arr)
+      this.setHeaders(arr[0]);
+      this.tableItems = arr;
+      this.currentFile.push(...arr);
     },
 
     /**
@@ -117,6 +127,23 @@ export default defineComponent({
         XLSX.utils.book_append_sheet(wb, worksheet, "test");
 
         XLSX.writeFile(wb,"test.xlsx")
+    },
+
+    /**
+     * Set the column headers for data-table.
+     * @param {Object} arr
+     */
+    setHeaders(arr: object) : void {
+        Object.keys(arr).map((header: string) => {
+          let toAdd: HeaderType = {
+              title: header.toUpperCase(),
+              align: "center",
+              sortable: false,
+              key: header
+          }
+
+          this.tableColumnHeaders.push(toAdd);
+        })
     }
   },
 })
@@ -145,6 +172,6 @@ export default defineComponent({
 
 .file-item {
   grid-area: main;
-  padding: 10rem;
+  padding: 2% 0
 }
 </style>

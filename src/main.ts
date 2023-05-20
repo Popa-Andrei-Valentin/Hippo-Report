@@ -15,6 +15,12 @@ const icons = {
     defaultSet: 'mdi', // This is already the default value - only for display purposes
 }
 
+// Vue-Data-Table ( experimental )
+import { VDataTable } from 'vuetify/labs/VDataTable'
+// @ts-ignore
+components["VDataTable"] = VDataTable
+
+
 const vuetify = createVuetify({
     components,
     directives,
