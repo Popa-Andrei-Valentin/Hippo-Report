@@ -195,13 +195,12 @@ export default defineComponent({
   justify-items: center;
   height: 100%;
   width: 95%;
-  padding: 2% 0;
   box-shadow: 0 0 0.75rem #8080803C;
 
   grid-template-areas:
     "buttons"
     "grid";
-  grid-template-rows: 10% 90%;
+  grid-template-rows: 5vh 70vh;
   grid-template-columns: 100%;
 }
 
