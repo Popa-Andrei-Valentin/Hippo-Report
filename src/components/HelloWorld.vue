@@ -5,7 +5,7 @@
     </div>
     <div class="file-item">
         <div class="grid-buttons">
-            <grid-button-animated text="Download" @click=""></grid-button-animated>
+            <grid-button-animated class="btn" text="Download" @click="writeExcel" />
         </div>
           <ag-grid-vue
             class="ag-theme-material"
@@ -216,6 +216,10 @@ export default defineComponent({
     display: flex;
     justify-content: end;
     align-items: center;
+}
+
+.grid-buttons > * {
+    margin-right: 10px;
 }
 
 :global(.ag-header-cell-label) {

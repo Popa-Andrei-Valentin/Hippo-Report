@@ -42,7 +42,7 @@ export default defineComponent({
 }
 
 .button-animated .button-animated__text {
-    transform: translateX(30px);
+    transform: translateX(20px);
     color: #fff;
     font-weight: 600;
 }
