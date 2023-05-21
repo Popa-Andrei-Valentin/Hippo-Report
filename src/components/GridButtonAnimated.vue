@@ -1,7 +1,7 @@
 <template>
-  <button type="button" class="button" @click="emitClick">
-    <span class="button__text">{{text}}</span>
-    <span class="button__icon"></span>
+  <button type="button" class="button-animated" @click="emitClick">
+    <span class="button-animated__text">{{text}}</span>
+    <span class="button-animated__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" height="24" fill="none" class="svg"><line y2="19" y1="5" x2="12" x1="12"></line><line y2="12" y1="12" x2="19" x1="5"></line></svg></span>
   </button>
 </template>
 
@@ -26,7 +26,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.button {
+.button-animated {
     position: relative;
     width: 150px;
     height: 40px;
@@ -37,17 +37,17 @@ export default defineComponent({
     background-color: #3aa856;
 }
 
-.button, .button__icon, .button__text {
+.button-animated, .button-animated__icon, .button-animated__text {
     transition: all 0.3s;
 }
 
-.button .button__text {
+.button-animated .button-animated__text {
     transform: translateX(30px);
     color: #fff;
     font-weight: 600;
 }
 
-.button .button__icon {
+.button-animated .button-animated__icon {
     position: absolute;
     transform: translateX(109px);
     height: 100%;
@@ -58,29 +58,29 @@ export default defineComponent({
     justify-content: center;
 }
 
-.button .svg {
+.button-animated .svg {
     width: 30px;
     stroke: #fff;
 }
 
-.button:hover {
+.button-animated:hover {
     background: #34974d;
 }
 
-.button:hover .button__text {
+.button-animated:hover .button-animated__text {
     color: transparent;
 }
 
-.button:hover .button__icon {
+.button-animated:hover .button-animated__icon {
     width: 148px;
     transform: translateX(0);
 }
 
-.button:active .button__icon {
+.button-animated:active .button-animated__icon {
     background-color: #2e8644;
 }
 
-.button:active {
+.button-animated:active {
     border: 1px solid #2e8644;
 }
 </style>
