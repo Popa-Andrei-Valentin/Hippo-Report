@@ -212,6 +212,10 @@ export default defineComponent({
     height: 100%;
     width: 100%;
     grid-area: buttons;
+    border: 2px solid red;
+    display: flex;
+    justify-content: end;
+    align-items: center;
 }
 
 :global(.ag-header-cell-label) {
