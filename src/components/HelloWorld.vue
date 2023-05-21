@@ -229,6 +229,7 @@ export default defineComponent({
     display: flex;
     justify-content: end;
     align-items: center;
+    border-bottom: 1px solid #e2e2e2;
 }
 
 .grid-buttons > * {
