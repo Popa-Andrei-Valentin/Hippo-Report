@@ -5,7 +5,11 @@
     </div>
     <div class="file-item">
         <div class="grid-buttons">
-            <grid-button-animated class="btn" text="Download" @click="writeExcel" />
+            <grid-button-animated
+              class="btn"
+              text="Download"
+              :disabled="isDownloadPossible"
+              @click="writeExcel" />
         </div>
           <ag-grid-vue
             class="ag-theme-material"
@@ -62,6 +66,15 @@ export default defineComponent({
     msg: {
       type: String,
       default: ():string => "404: No message found"
+    }
+  },
+  computed: {
+    /**
+     * Computed value used to determine if download button should be disabled.
+     * Used for additional buttons on top of Ag-Grid.
+     */
+    isDownloadPossible(): boolean {
+        return this.currentFile.length < 1
     }
   },
   methods: {

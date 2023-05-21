@@ -1,5 +1,5 @@
 <template>
-  <button type="button" class="button-animated" @click="emitClick">
+  <button type="button" class="button-animated" @click="emitClick" :disabled="disabled">
     <span class="button-animated__text">{{text}}</span>
     <span class="button-animated__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" height="24" fill="none" class="svg"><line y2="19" y1="5" x2="12" x1="12"></line><line y2="12" y1="12" x2="19" x1="5"></line></svg></span>
   </button>
@@ -16,6 +16,10 @@ export default defineComponent({
             required: true,
             default:(): string => "Error"
         },
+        disabled: {
+            type: Boolean,
+            default: (): boolean => false
+        }
     },
     methods: {
         emitClick() {
@@ -35,6 +39,16 @@ export default defineComponent({
     align-items: center;
     border: 1px solid #34974d;
     background-color: #3aa856;
+}
+
+.button-animated:disabled {
+    background-color: gray;
+    pointer-events: none;
+    border: 1px solid gray;
+}
+
+.button-animated:disabled .button-animated__icon {
+    background-color: gray;
 }
 
 .button-animated, .button-animated__icon, .button-animated__text {
