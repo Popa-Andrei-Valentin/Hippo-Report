@@ -5,8 +5,7 @@
     </div>
     <div class="file-item">
         <div class="grid-buttons">
-            <button>Delete</button>
-            <button>New Table</button>
+            <grid-button-animated text="Download" @click=""></grid-button-animated>
         </div>
           <ag-grid-vue
             class="ag-theme-material"
@@ -31,6 +30,7 @@ import { HeaderType } from "@/typings/DataTableType";
 import {AgGridVue} from "ag-grid-vue3";
 import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-material.css'
+import gridButtonAnimated from "@/components/GridButtonAnimated.vue";
 
 
 export default defineComponent({
@@ -55,7 +55,8 @@ export default defineComponent({
     }
   },
   components: {
-      AgGridVue
+      AgGridVue,
+      gridButtonAnimated
   },
   props: {
     msg: {
@@ -200,7 +201,7 @@ export default defineComponent({
   grid-template-areas:
     "buttons"
     "grid";
-  grid-template-rows: 5vh 70vh;
+  grid-template-rows: 7vh 70vh;
   grid-template-columns: 100%;
 }
 
