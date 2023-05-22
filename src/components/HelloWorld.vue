@@ -109,8 +109,9 @@ export default defineComponent({
 
     writeFile(arr: object[]) {
       this.setHeaders(arr[0]);
-      this.rowsData = arr;
+      // this.rowsData = arr;
       this.currentFile.push(...arr);
+      this.calculateTotal();
     },
 
     /**
@@ -118,7 +119,7 @@ export default defineComponent({
     * Return an object without duplicates.
     */
     calculateTotal():void {
-        let filteredTable: {[key: string]: RestaurantType} = {}
+        let processedTable: {[key: string]: RestaurantType} = {}
         let verifiedTables: string[] = [];
         let total = 0;
 
@@ -128,15 +129,19 @@ export default defineComponent({
                 let name = obj["Produs"].toLowerCase()
                 if (verifiedTables.length < 1 || verifiedTables.indexOf(name) === -1) {
                    verifiedTables.push(name);
-                   filteredTable[name] = obj;
+                    processedTable[name] = obj;
                 } else {
-                    filteredTable[name]["Cantitate"] += obj["Cantitate"]
-                    filteredTable[name]["Total"] += obj["Total"]
+                    if (!processedTable[name].children) processedTable[name].children = [obj]
+                    else processedTable[name].children?.push(obj);
+
+                    processedTable[name]["Cantitate"] += obj["Cantitate"]
+                    processedTable[name]["Total"] += obj["Total"]
                 }
             })
         }
 
-        Object.values(filteredTable).forEach(obj => this.arrayForExport.push(obj));
+        Object.values(processedTable).forEach(obj => this.arrayForExport.push(obj));
+        this.rowsData = this.arrayForExport;
         this.currExcelTotal["TOTAL"] = total;
         this.arrayForExport.push(this.currExcelTotal);
     },
