@@ -183,6 +183,7 @@ export default defineComponent({
      * Method that is called by AG-Grid when the grid is ready to be mounted to DOM.
      */
     onGridReady(params: GridApi<RestaurantType>): void {
+
         // @ts-ignore
         this.gridApi = params.api;
 
@@ -191,8 +192,27 @@ export default defineComponent({
         if(overlayInput) overlayInput.addEventListener('change', this.readFile) // TODO: FIX TS ERROR FOR QUERY SELECTOR.
     },
 
-    onRowClicked(e: any){
-      console.log(e);
+    onRowClicked(e: any): void {
+      if (e.data.children && e.data.children.length > 0) {
+        for (let i=0; i<this.rowsData.length; i++) {
+          if (e.data.customId === this.rowsData[i].customId && !this.rowsData[i].expanded) {
+              //Expand duplicate tree
+              this.rowsData[i].expanded = true;
+              this.rowsData.splice(i + 1, 0, ...e.data.children)
+              //@ts-ignore
+              this.gridApi.setRowData(this.rowsData)
+              break
+          } else if (this.rowsData[i].expanded) {
+              // Shrink duplicate tree.
+              this.rowsData[i].expanded = false;
+              let children = this.rowsData[i].children
+              this.rowsData.splice(i+1, children.length);
+              //@ts-ignore
+              this.gridApi.setRowData(this.rowsData)
+              break
+          }
+        }
+      }
     }
   },
 })
