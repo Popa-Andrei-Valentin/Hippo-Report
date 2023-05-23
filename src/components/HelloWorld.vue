@@ -18,6 +18,7 @@
             :defaultColDef="defaultColDef"
             :rowData="rowsData"
             :overlayNoRowsTemplate="noRowsOverlay"
+            @rowClicked="onRowClicked"
             @gridReady="onGridReady"
           ></ag-grid-vue>
           <!-- <button @click="calculateTotal">Total Sum</button>-->
@@ -35,6 +36,8 @@ import {AgGridVue} from "ag-grid-vue3";
 import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-material.css'
 import gridButtonAnimated from "@/components/GridButtonAnimated.vue";
+import {GridApi, GridOptions} from "ag-grid-community";
+import {DetailGridInfo} from "ag-grid-community/dist/lib/gridApi";
 
 
 export default defineComponent({
@@ -55,7 +58,8 @@ export default defineComponent({
           resizable: true,
           flex: 1
       },
-      noRowsOverlay: "<input class='inputOverlay' type='file' @change='() => console.log(this)' />"
+      noRowsOverlay: "<input class='inputOverlay' type='file' @change='() => console.log(this)' />",
+      gridApi: null,
     }
   },
   components: {
@@ -124,7 +128,8 @@ export default defineComponent({
         let total = 0;
 
         if (this.currentFile.length > 0) {
-            this.currentFile.map((obj: RestaurantType) => {
+            this.currentFile.map((obj: RestaurantType, index: number) => {
+                obj.customId = index;
                 total = obj["Total"] + total
                 let name = obj["Produs"].toLowerCase()
                 if (verifiedTables.length < 1 || verifiedTables.indexOf(name) === -1) {
@@ -177,10 +182,17 @@ export default defineComponent({
     /**
      * Method that is called by AG-Grid when the grid is ready to be mounted to DOM.
      */
-    onGridReady(): void {
+    onGridReady(params: GridApi<RestaurantType>): void {
+        // @ts-ignore
+        this.gridApi = params.api;
+
         let overlayInput = document.querySelector(".inputOverlay");
         // @ts-ignore
         if(overlayInput) overlayInput.addEventListener('change', this.readFile) // TODO: FIX TS ERROR FOR QUERY SELECTOR.
+    },
+
+    onRowClicked(e: any){
+      console.log(e);
     }
   },
 })
