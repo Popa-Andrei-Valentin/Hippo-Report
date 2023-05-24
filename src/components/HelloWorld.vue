@@ -18,6 +18,9 @@
             :defaultColDef="defaultColDef"
             :rowData="rowsData"
             :overlayNoRowsTemplate="noRowsOverlay"
+            :getRowStyle="getRowStyle"
+            :deltaRowDataMode="true"
+            :getRowId="getRowId"
             @rowClicked="onRowClicked"
             @gridReady="onGridReady"
           ></ag-grid-vue>
@@ -136,9 +139,10 @@ export default defineComponent({
                    verifiedTables.push(name);
                     processedTable[name] = obj;
                 } else {
+                    obj.duplicate = true;
                     if (!processedTable[name].children) processedTable[name].children = [obj]
                     else processedTable[name].children?.push(obj);
-
+                    processedTable[name].expanded = false;
                     processedTable[name]["Cantitate"] += obj["Cantitate"]
                     processedTable[name]["Total"] += obj["Total"]
                 }
@@ -174,6 +178,8 @@ export default defineComponent({
           let toAdd: HeaderType = {
               field: header,
           }
+
+          if (header === "Sectie") toAdd.cellRenderer = this.addArrowForNestedRows
 
           this.columnsDef.push(toAdd);
         })
@@ -213,6 +219,26 @@ export default defineComponent({
           }
         }
       }
+    },
+
+    /**
+     * Add icon which shows if nested row is expanded/shrunk.
+     */
+    addArrowForNestedRows(param: any){
+        if (Object.prototype.hasOwnProperty.call(param.data, "expanded")) {
+            return `${param.data.expanded ? "-" : "+"} ${param.value}`
+        }
+        return param.value
+    },
+
+    getRowStyle(params: any) {
+        if(params.data.children || params.data.duplicate) {
+            return {background: 'yellow'}
+        }
+    },
+
+    getRowId(params: any) {
+      return params.data.customId
     }
   },
 })

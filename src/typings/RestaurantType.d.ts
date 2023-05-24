@@ -9,5 +9,6 @@ export interface RestaurantType {
     Total: number,
     children?: Array<RestaurantType>,
     customId?: number,
-    expanded?: boolean
+    expanded?: boolean,
+    duplicate?: boolean,
 }

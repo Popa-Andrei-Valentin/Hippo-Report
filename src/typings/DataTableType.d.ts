@@ -1,3 +1,4 @@
 export interface HeaderType {
-   field: string
+   field: string,
+   cellRenderer?: (param: any)=>void,
 }
