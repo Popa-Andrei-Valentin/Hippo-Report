@@ -21,6 +21,7 @@
             :getRowStyle="getRowStyle"
             :deltaRowDataMode="true"
             :getRowId="getRowId"
+            :animateRows="true"
             @rowClicked="onRowClicked"
             @gridReady="onGridReady"
           ></ag-grid-vue>
@@ -32,7 +33,7 @@
 
 <script lang="ts">
 import * as XLSX from "xlsx"
-import { defineComponent } from 'vue'
+import { defineComponent, toRaw } from 'vue'
 import { RestaurantType } from "@/typings/RestaurantType";
 import { HeaderType } from "@/typings/DataTableType";
 import {AgGridVue} from "ag-grid-vue3";
@@ -125,13 +126,14 @@ export default defineComponent({
     * PROTOTYPE: Calculate total and add up any duplicates,
     * Return an object without duplicates.
     */
-    calculateTotal():void {
+    async calculateTotal(): Promise<void> {
         let processedTable: {[key: string]: RestaurantType} = {}
         let verifiedTables: string[] = [];
         let total = 0;
 
         if (this.currentFile.length > 0) {
             this.currentFile.map((obj: RestaurantType, index: number) => {
+                obj = toRaw(obj);
                 obj.customId = index;
                 total = obj["Total"] + total
                 let name = obj["Produs"].toLowerCase()
@@ -140,8 +142,16 @@ export default defineComponent({
                     processedTable[name] = obj;
                 } else {
                     obj.duplicate = true;
-                    if (!processedTable[name].children) processedTable[name].children = [obj]
-                    else processedTable[name].children?.push(obj);
+                    if (!processedTable[name].children) {
+                      let initialObj = {...processedTable[name]}
+                      initialObj.duplicate = true
+                      // In order to avoid ag-grid auto-adding it to the list.
+                      initialObj.customId = 999
+
+                      processedTable[name].children = [initialObj,obj];
+                    } else {
+                        processedTable[name].children?.push(obj);
+                    }
                     processedTable[name].expanded = false;
                     processedTable[name]["Cantitate"] += obj["Cantitate"]
                     processedTable[name]["Total"] += obj["Total"]
@@ -189,7 +199,22 @@ export default defineComponent({
      * Method that is called by AG-Grid when the grid is ready to be mounted to DOM.
      */
     onGridReady(params: GridApi<RestaurantType>): void {
-
+        window.addEventListener('error', e => {
+            if (e.message === 'ResizeObserver loop limit exceeded') {
+                const resizeObserverErrDiv = document.getElementById(
+                    'webpack-dev-server-client-overlay-div'
+                );
+                const resizeObserverErr = document.getElementById(
+                    'webpack-dev-server-client-overlay'
+                );
+                if (resizeObserverErr) {
+                    resizeObserverErr.setAttribute('style', 'display: none');
+                }
+                if (resizeObserverErrDiv) {
+                    resizeObserverErrDiv.setAttribute('style', 'display: none');
+                }
+            }
+        });
         // @ts-ignore
         this.gridApi = params.api;
 
