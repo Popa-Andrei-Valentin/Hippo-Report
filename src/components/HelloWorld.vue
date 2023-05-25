@@ -22,6 +22,7 @@
             :deltaRowDataMode="true"
             :getRowId="getRowId"
             :animateRows="true"
+            :suppressRowHoverHighlight=true
             @rowClicked="onRowClicked"
             @gridReady="onGridReady"
           ></ag-grid-vue>
@@ -257,8 +258,11 @@ export default defineComponent({
     },
 
     getRowStyle(params: any) {
-        if(params.data.children || params.data.duplicate) {
-            return {background: 'yellow'}
+        if (params.data.children) {
+            return {background: '#ffdd00'}
+        }
+        if (params.data.duplicate) {
+            return {background: '#fcf588'}
         }
     },
 
