@@ -147,7 +147,7 @@ export default defineComponent({
                       let initialObj = {...processedTable[name]}
                       initialObj.duplicate = true
                       // In order to avoid ag-grid auto-adding it to the list.
-                      initialObj.customId = 999
+                      initialObj.customId = Math.floor(Math.random() * (999999 - this.rowsData.length + 1) + this.rowsData.length);
 
                       processedTable[name].children = [initialObj,obj];
                     } else {
