@@ -224,21 +224,22 @@ export default defineComponent({
         if(overlayInput) overlayInput.addEventListener('change', this.readFile) // TODO: FIX TS ERROR FOR QUERY SELECTOR.
     },
 
+    /**
+     * Update Ag-Grid with rows when user clicks on highlighted row.
+     * Expands/Shrinks nested rows.
+     * @param e
+     */
     onRowClicked(e: any): void {
       if (e.data.children && e.data.children.length > 0) {
         for (let i=0; i<this.rowsData.length; i++) {
-          if (e.data.customId === this.rowsData[i].customId && !this.rowsData[i].expanded) {
-              //Expand duplicate tree
-              this.rowsData[i].expanded = true;
-              this.rowsData.splice(i + 1, 0, ...e.data.children)
-              //@ts-ignore
-              this.gridApi.setRowData(this.rowsData)
-              break
-          } else if (this.rowsData[i].expanded) {
-              // Shrink duplicate tree.
-              this.rowsData[i].expanded = false;
-              let children = this.rowsData[i].children
-              this.rowsData.splice(i+1, children.length);
+          if(e.data.customId === this.rowsData[i].customId) {
+              this.rowsData[i].expanded = !this.rowsData[i].expanded ;
+
+              if (this.rowsData[i].expanded) {
+                  this.rowsData.splice(i + 1, 0, ...e.data.children)
+              } else {
+                  this.rowsData.splice(i+1, e.data.children.length);
+              }
               //@ts-ignore
               this.gridApi.setRowData(this.rowsData)
               break
