@@ -43,8 +43,7 @@ import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-material.css'
 import gridButtonAnimated from "@/components/GridButtonAnimated.vue";
 import {GridApi, GridOptions} from "ag-grid-community";
-import {DetailGridInfo} from "ag-grid-community/dist/lib/gridApi";
-
+import ActionIconComp from "@/components/ActionIconComp.vue";
 
 export default defineComponent({
   data () {
@@ -70,7 +69,8 @@ export default defineComponent({
   },
   components: {
       AgGridVue,
-      gridButtonAnimated
+      gridButtonAnimated,
+      ActionIconComp
   },
   props: {
     msg: {
@@ -202,9 +202,7 @@ export default defineComponent({
             width: 100,
             maxWidth: 100,
             minWidth: 50,
-            cellRenderer: (params: any) => {
-                return !params.data.duplicate ? '<i class="fa-solid fa-ellipsis-vertical"></i>' : ''
-            }
+            cellRenderer: ActionIconComp
         })
     },
 
