@@ -25,6 +25,7 @@
             :suppressRowHoverHighlight=true
             @rowClicked="onRowClicked"
             @gridReady="onGridReady"
+            @cellClicked="onCellClicked"
           ></ag-grid-vue>
           <!-- <button @click="calculateTotal">Total Sum</button>-->
           <!-- <button v-if="this.arrayForExport.length > 0" @click="writeExcel">Download</button>-->
@@ -63,7 +64,7 @@ export default defineComponent({
           resizable: true,
           flex: 1
       },
-      noRowsOverlay: "<input class='inputOverlay' type='file' @change='() => console.log(this)' />",
+      noRowsOverlay: "<input class='inputOverlay' type='file'/>",
       gridApi: null,
     }
   },
@@ -280,6 +281,10 @@ export default defineComponent({
 
     getRowId(params: any) {
       return params.data.customId
+    },
+
+    onCellClicked (params: any) {
+        console.log(params);
     }
   },
 })
