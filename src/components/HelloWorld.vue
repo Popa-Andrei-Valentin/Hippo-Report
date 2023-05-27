@@ -23,7 +23,6 @@
             :getRowId="getRowId"
             :animateRows="true"
             :suppressRowHoverHighlight=true
-            @rowClicked="onRowClicked"
             @gridReady="onGridReady"
             @cellClicked="onCellClicked"
           ></ag-grid-vue>
@@ -282,7 +281,21 @@ export default defineComponent({
     },
 
     onCellClicked (params: any) {
-        console.log(params);
+      if (
+          params.event.target.dataset.action == 'toggle' &&
+          params.column.getColId() == 'Action'
+      ) {
+        const cellRendererInstances = params.api.getCellRendererInstances({
+          rowNodes: [params.node],
+          columns: [params.column],
+        });
+        if (cellRendererInstances.length > 0) {
+          const instance = cellRendererInstances[0];
+          instance.togglePopup();
+        }
+      } else {
+        this.onRowClicked(params);
+      }
     }
   },
 })
