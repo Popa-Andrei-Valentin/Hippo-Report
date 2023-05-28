@@ -9,11 +9,16 @@
 
     <!-- Menu -->
     <div v-if="isOpen" ref="content" class="menu-container">
-        <div v-on:click="onClickHandler('visualize')" class="menu-item">
+        <div
+            @click="onClickHandler('visualize')"
+            class="menu-item">
             <i class="fa-regular fa-eye"></i> Visualize param
         </div>
 
-        <div v-on:click="onClickHandler('approve')" class="menu-item">
+        <div
+            v-if="isRoot"
+            @click="onClickHandler('approve')"
+            class="menu-item">
             <i class="fa-regular fa-circle-check"></i> Confirm calculus
         </div>
     </div>
@@ -30,11 +35,15 @@ export default {
             isOpen: false,
             tippyInstance: null,
             isDuplicate: false,
+            isRoot: false
         }
     },
     mounted() {
         // Disabled action elipsis for nested rows.
         if (this.params.data.duplicate) this.isDuplicate = true
+
+        // Enable Confirm Calculus operation only for root rows ( which show nested rows when clicked upon )
+        if (this.params.data.children && this.params.data.children.length > 0) this.isRoot = true
 
         this.tippyInstance = tippy(this.$refs.trigger);
         this.tippyInstance.disable();
