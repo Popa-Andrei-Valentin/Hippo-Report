@@ -11,6 +11,9 @@ export default createStore({
   actions: {
   },
   modules: {
+    //@ts-ignore
+    // TODO: FIX ACTION<any, {}> error
+    // https://github.com/championswimmer/vuex-persist/issues/132
     gridStore: gridStore
   }
 })

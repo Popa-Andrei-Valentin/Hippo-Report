@@ -29,6 +29,9 @@
 import tippy from 'tippy.js';
 import { hideAll } from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
+import { mapActions } from "vuex";
+import { toRaw } from "vue";
+
 export default {
     data() {
         return {
@@ -36,7 +39,8 @@ export default {
             tippyInstance: null,
             isDuplicate: false,
             isRoot: false,
-            currentRowId: {}
+            currentRowId: -1,
+            currentRowData: {}
         }
     },
     mounted() {
@@ -46,12 +50,17 @@ export default {
         // Enable Confirm Calculus operation only for root rows ( which show nested rows when clicked upon )
         if (this.params.data.children && this.params.data.children.length > 0) this.isRoot = true
 
-        this.currentRowId = this.params.data.customId;
+        this.currentRowId = this.params.rowIndex;
+        this.currentRowData = this.params.data
 
         this.tippyInstance = tippy(this.$refs.trigger);
         this.tippyInstance.disable();
     },
     methods: {
+        ...mapActions({
+            updateRowDataAfterCalcul: 'updateRowDataAfterCalcul'
+        }),
+
         togglePopup() {
             this.isOpen = !this.isOpen;
             if (this.isOpen) {
@@ -89,7 +98,10 @@ export default {
                 console.log("Visualize")
             }
             if (option === 'approve') {
-                console.log("Approve", this.currentRowId);
+                this.updateRowDataAfterCalcul({
+                    id: this.currentRowId,
+                    data: toRaw(this.currentRowData)
+                });
             }
         },
     },
