@@ -16,7 +16,7 @@
             style="height: 70vh; width: 100%"
             :columnDefs="columnsDef"
             :defaultColDef="defaultColDef"
-            :rowData="rowsData"
+            :rowData="getRowData"
             :overlayNoRowsTemplate="noRowsOverlay"
             :getRowStyle="getRowStyle"
             :deltaRowDataMode="true"
@@ -26,8 +26,6 @@
             @gridReady="onGridReady"
             @cellClicked="onCellClicked"
           ></ag-grid-vue>
-          <!-- <button @click="calculateTotal">Total Sum</button>-->
-          <!-- <button v-if="this.arrayForExport.length > 0" @click="writeExcel">Download</button>-->
     </div>
   </div>
 </template>
@@ -58,7 +56,6 @@ export default defineComponent({
 
       // ------- AG-Grid ------- //
       columnsDef: new Array(),
-      rowsData: new Array(),
       defaultColDef: {
           resizable: true,
           flex: 1
@@ -125,7 +122,6 @@ export default defineComponent({
 
     writeFile(arr: object[]) {
       this.setHeaders(arr[0]);
-      // this.rowsData = arr;
       this.currentFile.push(...arr);
       this.calculateTotal();
     },
@@ -154,7 +150,7 @@ export default defineComponent({
                       let initialObj = {...processedTable[name]}
                       initialObj.duplicate = true
                       // In order to avoid ag-grid auto-adding it to the list.
-                      initialObj.customId = Math.floor(Math.random() * (999999 - this.rowsData.length + 1) + this.rowsData.length);
+                      initialObj.customId = Math.floor(Math.random() * (999999 - this.getRowData.length + 1) + this.getRowData.length);
 
                       processedTable[name].children = [initialObj,obj];
                     } else {
@@ -170,7 +166,7 @@ export default defineComponent({
         Object.values(processedTable).forEach(obj => this.arrayForExport.push(obj));
 
         // Set Rows for AG-Grid.
-        await this.setRows(this.arrayForExport)
+        await this.setNewRowData(this.arrayForExport)
 
         this.currExcelTotal["TOTAL"] = total;
         this.arrayForExport.push(this.currExcelTotal);
@@ -190,13 +186,6 @@ export default defineComponent({
     },
 
     // ------- AG-Grid Methods------- //
-
-    /** Set Rows for AG-GRid */
-    async setRows(newRows: RestaurantType[]) {
-      await this.setNewRowData(newRows);
-      this.rowsData = this.getRowData;
-    },
-
 
     /**
      * Set the column headers for data-table.
@@ -256,20 +245,24 @@ export default defineComponent({
      * Expands/Shrinks nested rows.
      * @param e
      */
-    onRowClicked(e: any): void {
+    async onRowClicked(e: any): Promise<any> {
+      let rowData = this.getRowData
       if (e.data.children && e.data.children.length > 0) {
-        for (let i=0; i<this.rowsData.length; i++) {
-          if(e.data.customId === this.rowsData[i].customId) {
-              this.rowsData[i].expanded = !this.rowsData[i].expanded ;
+        for (let i=0; i < rowData.length; i++) {
+          if(e.data.customId === rowData[i].customId) {
+            rowData[i].expanded = !rowData[i].expanded ;
 
-              if (this.rowsData[i].expanded) {
-                  this.rowsData.splice(i + 1, 0, ...e.data.children)
+              if (rowData[i].expanded) {
+                rowData.splice(i + 1, 0, ...e.data.children)
               } else {
-                  this.rowsData.splice(i+1, e.data.children.length);
+                rowData.splice(i+1, e.data.children.length);
               }
+
+              await this.setNewRowData(rowData)
+
               //@ts-ignore
-              this.gridApi.setRowData(this.rowsData)
-              break
+              this.gridApi.setRowData(this.getRowData)
+            break
           }
         }
       }
