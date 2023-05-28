@@ -1,6 +1,7 @@
 <template>
     <!-- Icon -->
     <i
+        v-if="!isDuplicate"
         ref="trigger"
         data-action="toggle"
         class="fa-solid fa-ellipsis-vertical fa-xl"
@@ -28,9 +29,13 @@ export default {
         return {
             isOpen: false,
             tippyInstance: null,
+            isDuplicate: false,
         }
     },
     mounted() {
+        // Disabled action elipsis for nested rows.
+        if (this.params.data.duplicate) this.isDuplicate = true
+
         this.tippyInstance = tippy(this.$refs.trigger);
         this.tippyInstance.disable();
     },
@@ -96,6 +101,7 @@ export default {
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 0.25rem;
 }
+
 .menu-item:hover {
     cursor: pointer;
     background: rgb(240, 240, 240);
@@ -106,8 +112,8 @@ export default {
     border-color: #dc3545;
     color: white;
 }
+
 .menu-item {
-    border: 2px solid red;
     display: block;
     padding: 0.25rem 1rem;
     clear: both;
@@ -116,6 +122,5 @@ export default {
     text-align: inherit;
     text-decoration: none;
     white-space: nowrap;
-    border: 0;
 }
 </style>
