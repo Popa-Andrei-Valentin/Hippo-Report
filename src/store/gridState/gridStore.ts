@@ -1,6 +1,7 @@
 import {RestaurantType} from "@/typings/RestaurantType";
 import {HeaderType} from "@/typings/DataTableType";
-import {toRaw} from "vue";
+import {toRaw, nextTick} from "vue";
+
 export default {
     state: {
         rowData: new Array(),
@@ -45,6 +46,10 @@ export default {
 
                 delete rowData[currentRowObj.id].children
                 delete rowData[currentRowObj.id].expanded
+
+                commit("setRowData", []);
+                await nextTick();
+
                 commit("setRowData", rowData);
             } else {
                 console.warn("Something went wrong with calculus confirmation")

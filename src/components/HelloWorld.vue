@@ -200,7 +200,7 @@ export default defineComponent({
             field: header,
         }
 
-        if (header === "Sectie") toAdd.cellRenderer = this.addArrowForNestedRows
+        // if (header === "Sectie") toAdd.cellRenderer = this.addArrowForNestedRows
 
         columnsDef.push(toAdd);
       })
