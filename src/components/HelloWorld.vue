@@ -43,6 +43,7 @@ import 'ag-grid-community/styles/ag-theme-material.css'
 import gridButtonAnimated from "@/components/GridButtonAnimated.vue";
 import {GridApi, GridOptions} from "ag-grid-community";
 import ActionIconComp from "@/components/ActionIconComp.vue";
+import { mapGetters, mapActions } from "vuex";
 
 export default defineComponent({
   data () {
@@ -78,6 +79,8 @@ export default defineComponent({
     }
   },
   computed: {
+    ...mapGetters({getRowData: 'getRowData'}),
+
     /**
      * Computed value used to determine if download button should be disabled.
      * Used for additional buttons on top of Ag-Grid.
@@ -87,6 +90,10 @@ export default defineComponent({
     }
   },
   methods: {
+    ...mapActions({
+      setNewRowData: 'setNewRowData'
+    }),
+
     // ------- XLSX Methods ------- //
     /**
      * Read file and save it to currentFile variable.
@@ -161,7 +168,10 @@ export default defineComponent({
         }
 
         Object.values(processedTable).forEach(obj => this.arrayForExport.push(obj));
-        this.rowsData = this.arrayForExport;
+
+        // Set Rows for AG-Grid.
+        await this.setRows(this.arrayForExport)
+
         this.currExcelTotal["TOTAL"] = total;
         this.arrayForExport.push(this.currExcelTotal);
     },
@@ -180,6 +190,14 @@ export default defineComponent({
     },
 
     // ------- AG-Grid Methods------- //
+
+    /** Set Rows for AG-GRid */
+    async setRows(newRows: RestaurantType[]) {
+      await this.setNewRowData(newRows);
+      this.rowsData = this.getRowData;
+    },
+
+
     /**
      * Set the column headers for data-table.
      * @param {Object} arr
