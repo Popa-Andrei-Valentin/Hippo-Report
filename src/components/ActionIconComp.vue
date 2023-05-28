@@ -35,7 +35,8 @@ export default {
             isOpen: false,
             tippyInstance: null,
             isDuplicate: false,
-            isRoot: false
+            isRoot: false,
+            currentRowId: {}
         }
     },
     mounted() {
@@ -44,6 +45,8 @@ export default {
 
         // Enable Confirm Calculus operation only for root rows ( which show nested rows when clicked upon )
         if (this.params.data.children && this.params.data.children.length > 0) this.isRoot = true
+
+        this.currentRowId = this.params.data.customId;
 
         this.tippyInstance = tippy(this.$refs.trigger);
         this.tippyInstance.disable();
@@ -86,7 +89,7 @@ export default {
                 console.log("Visualize")
             }
             if (option === 'approve') {
-                console.log("Approve")
+                console.log("Approve", this.currentRowId);
             }
         },
     },
