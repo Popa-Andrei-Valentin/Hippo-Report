@@ -14,7 +14,7 @@
           <ag-grid-vue
             class="ag-theme-material"
             style="height: 70vh; width: 100%"
-            :columnDefs="columnsDef"
+            :columnDefs="getHeadersData"
             :defaultColDef="defaultColDef"
             :rowData="getRowData"
             :overlayNoRowsTemplate="noRowsOverlay"
@@ -55,7 +55,6 @@ export default defineComponent({
       currFileName: "",
 
       // ------- AG-Grid ------- //
-      columnsDef: new Array(),
       defaultColDef: {
           resizable: true,
           flex: 1
@@ -76,19 +75,22 @@ export default defineComponent({
     }
   },
   computed: {
-    ...mapGetters({getRowData: 'getRowData'}),
+    ...mapGetters({
+      getRowData: 'getRowData',
+      getHeadersData: 'getHeadersData'}),
 
     /**
      * Computed value used to determine if download button should be disabled.
      * Used for additional buttons on top of Ag-Grid.
      */
     isDownloadPossible(): boolean {
-        return this.currentFile.length < 1
+        return this.getRowData.length < 1
     }
   },
   methods: {
     ...mapActions({
-      setNewRowData: 'setNewRowData'
+      setNewRowData: 'setNewRowData',
+      setNewHeaderData: 'setNewHeaderData'
     }),
 
     // ------- XLSX Methods ------- //
@@ -191,25 +193,28 @@ export default defineComponent({
      * Set the column headers for data-table.
      * @param {Object} arr
      */
-    setHeaders(arr: object) : void {
-        Object.keys(arr).map((header: string) => {
-          let toAdd: HeaderType = {
-              field: header,
-          }
+    async setHeaders(arr: object) : Promise<void> {
+      let columnsDef = []
+      Object.keys(arr).map((header: string) => {
+        let toAdd: HeaderType = {
+            field: header,
+        }
 
-          if (header === "Sectie") toAdd.cellRenderer = this.addArrowForNestedRows
+        if (header === "Sectie") toAdd.cellRenderer = this.addArrowForNestedRows
 
-          this.columnsDef.push(toAdd);
-        })
+        columnsDef.push(toAdd);
+      })
 
-        this.columnsDef.push({
-            field: "Action",
-            resizable: false,
-            width: 100,
-            maxWidth: 100,
-            minWidth: 50,
-            cellRenderer: ActionIconComp
-        })
+      columnsDef.push({
+          field: "Action",
+          resizable: false,
+          width: 100,
+          maxWidth: 100,
+          minWidth: 50,
+          cellRenderer: ActionIconComp
+      });
+
+      await this.setNewHeaderData(columnsDef)
     },
 
     /**
@@ -245,7 +250,7 @@ export default defineComponent({
      * Expands/Shrinks nested rows.
      * @param e
      */
-    async onRowClicked(e: any): Promise<any> {
+    async onRowClicked(e: any): Promise<void> {
       let rowData = this.getRowData
       if (e.data.children && e.data.children.length > 0) {
         for (let i=0; i < rowData.length; i++) {
