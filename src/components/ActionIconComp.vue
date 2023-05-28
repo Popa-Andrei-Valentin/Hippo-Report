@@ -3,7 +3,7 @@
     <i
         ref="trigger"
         data-action="toggle"
-        class="fa-solid fa-ellipsis-vertical"
+        class="fa-solid fa-ellipsis-vertical fa-xl"
     />
 
     <!-- Menu -->
@@ -107,6 +107,7 @@ export default {
     color: white;
 }
 .menu-item {
+    border: 2px solid red;
     display: block;
     padding: 0.25rem 1rem;
     clear: both;
