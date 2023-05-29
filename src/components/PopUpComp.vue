@@ -7,8 +7,8 @@
                 <v-btn>
                     Button 1
                 </v-btn>
-                <v-btn>
-                    Button 2
+                <v-btn @click="updatePopUpStatus(false)">
+                    Close
                 </v-btn>
             </div>
         </div>
@@ -17,6 +17,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import {mapActions} from "vuex";
 
 export default defineComponent({
     props: {
@@ -30,6 +31,11 @@ export default defineComponent({
             required: true,
             default: () => "404: No text for pop-up was found."
         },
+    },
+    methods: {
+        ...mapActions({
+            updatePopUpStatus: "updatePopUpStatus"
+        })
     }
 })
 

@@ -58,7 +58,8 @@ export default {
     },
     methods: {
         ...mapActions({
-            updateRowDataAfterCalcul: 'updateRowDataAfterCalcul'
+            updateRowDataAfterCalcul: 'updateRowDataAfterCalcul',
+            updatePopUpOpenStatus: 'updatePopUpStatus'
         }),
 
         togglePopup() {
@@ -96,6 +97,7 @@ export default {
             this.togglePopup();
             if (option === 'visualize') {
                 console.log("Visualize")
+                this.updatePopUpOpenStatus(true)
             }
             if (option === 'approve') {
                 this.updateRowDataAfterCalcul({

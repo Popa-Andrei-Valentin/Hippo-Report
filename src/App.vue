@@ -1,5 +1,6 @@
 <template>
   <pop-up-comp
+      v-if="isPopUpOpen"
       title="Test header"
       text="Test text"
   />
@@ -13,10 +14,16 @@
 
 <script>
 import PopUpComp from "@/components/PopUpComp.vue";
+import {mapGetters} from "vuex";
 
 export default {
   components: {
     PopUpComp
+  },
+  computed: {
+    ...mapGetters({
+      isPopUpOpen: "isPopUpOpenStatus"
+    })
   }
 }
 </script>
