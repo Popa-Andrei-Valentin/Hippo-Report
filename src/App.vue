@@ -1,10 +1,25 @@
 <template>
+  <pop-up-comp
+      title="Test header"
+      text="Test text"
+  />
+
   <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
   </nav>
   <router-view/>
 </template>
+
+<script>
+import PopUpComp from "@/components/PopUpComp.vue";
+
+export default {
+  components: {
+    PopUpComp
+  }
+}
+</script>
 
 <style>
 #app {
