@@ -2,7 +2,8 @@ export default {
     state: {
         isPopUpOpen: false,
         popUpTitle: "",
-        popUpText: ""
+        popUpText: "",
+        popUpBtn: []
     },
     getters: {
         isPopUpOpenStatus(state: {isPopUpOpen: boolean}): boolean {
@@ -15,6 +16,10 @@ export default {
 
         getPopUpText(state: {popUpText: string}): string {
             return state.popUpText;
+        },
+
+        getPopUpBtn(state: {popUpBtn: []}): [] {
+            return state.popUpBtn
         }
     },
     mutations: {
@@ -29,6 +34,10 @@ export default {
         setPopUpText(state: {popUpText: string}, popUpText: string): void {
             state.popUpText = popUpText;
         },
+
+        setPopUpBtn(state: {popUpBtn: []}, buttons: []): void {
+            state.popUpBtn = buttons
+        }
     },
     actions: {
         //@ts-ignore
@@ -44,6 +53,11 @@ export default {
         //@ts-ignore
         updatePopUpText({commit}, text: string): void {
             commit('setPopUpText', text)
+        },
+
+        //@ts-ignore
+        updatePopUpBtn({commit}, button: []): void {
+           commit('setPopUpBtn', button)
         }
     },
 }

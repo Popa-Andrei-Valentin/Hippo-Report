@@ -1,14 +1,14 @@
 <template>
     <div class="pop-container">
         <div class="pop-rectangle">
-            <h1 class="pop-title">{{ title }}</h1>
-            <p class="pop-text">{{ text }}</p>
+            <h1 class="pop-title">{{ getPopUpTitle }}</h1>
+            <p class="pop-text">{{ getPopUpText }}</p>
             <div>
                 <v-btn>
                     Button 1
                 </v-btn>
-                <v-btn @click="updatePopUpStatus(false)">
-                    Close
+                <v-btn style="background-color: red; color: white" @click="updatePopUpStatus(false)">
+                    {{getPopUpBtn.length > 0 ? "<i class='fa-solid fa-circle-xmark' style='color: #ffffff;'></i> Cancel" : "Close" }}
                 </v-btn>
             </div>
         </div>
@@ -17,24 +17,19 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default defineComponent({
-    props: {
-        title: {
-            type: String,
-            required: true,
-            default: () => "404: No title for pop-up was found."
-        },
-        text: {
-            type: String,
-            required: true,
-            default: () => "404: No text for pop-up was found."
-        },
-    },
     methods: {
         ...mapActions({
             updatePopUpStatus: "updatePopUpStatus"
+        })
+    },
+    computed: {
+        ...mapGetters({
+            getPopUpTitle: "getPopUpTitle",
+            getPopUpText: "getPopUpText",
+            getPopUpBtn: "getPopUpBtn"
         })
     }
 })
