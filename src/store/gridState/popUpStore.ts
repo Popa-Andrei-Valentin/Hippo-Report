@@ -2,11 +2,11 @@ import {RestaurantType} from "@/typings/RestaurantType";
 
 export default {
     state: {
-        isPopUpOpen: false,
+        isPopUpOpen: {status: false, type: null},
         popUpObj: {},
     },
     getters: {
-        isPopUpOpenStatus(state: {isPopUpOpen: boolean}): boolean {
+        isPopUpOpenStatus(state: {isPopUpOpen: { status: boolean, type: string }}): {status: boolean, type: string} {
             return state.isPopUpOpen;
         },
 
@@ -15,8 +15,8 @@ export default {
         }
     },
     mutations: {
-        setPopUpStatus(state: {isPopUpOpen: boolean}, status: boolean): void {
-            state.isPopUpOpen = status;
+        setPopUpStatus(state: {isPopUpOpen: { status: boolean, type: string }}, objStatus: { status: boolean, type: string }): void {
+            state.isPopUpOpen = objStatus;
         },
 
         setPopUpObj(state: {popUpObj: RestaurantType}, currentPopObj: RestaurantType): void {
@@ -25,10 +25,10 @@ export default {
     },
     actions: {
         //@ts-ignore
-       updatePopUpStatus({commit}, status: boolean): void {
+       updatePopUpStatus({commit}, status: { status: boolean, type: string }): void {
            commit('setPopUpStatus', status)
        },
-        
+
         //@ts-ignore
         updatePopUpObj({commit}, currentPopObj: RestaurantType): void {
            commit('setPopUpObj', currentPopObj);
