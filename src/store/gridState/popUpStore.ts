@@ -1,25 +1,17 @@
+import {RestaurantType} from "@/typings/RestaurantType";
+
 export default {
     state: {
         isPopUpOpen: false,
-        popUpTitle: "",
-        popUpText: "",
-        popUpBtn: []
+        popUpObj: {},
     },
     getters: {
         isPopUpOpenStatus(state: {isPopUpOpen: boolean}): boolean {
             return state.isPopUpOpen;
         },
 
-        getPopUpTitle(state: {popUpTitle: string}): string {
-            return state.popUpTitle;
-        },
-
-        getPopUpText(state: {popUpText: string}): string {
-            return state.popUpText;
-        },
-
-        getPopUpBtn(state: {popUpBtn: []}): [] {
-            return state.popUpBtn
+        getPopUpObj(state: {popUpObj: RestaurantType}): RestaurantType {
+            return state.popUpObj;
         }
     },
     mutations: {
@@ -27,16 +19,8 @@ export default {
             state.isPopUpOpen = status;
         },
 
-        setPopUpTitle(state: {popUpTitle: string}, titleText: string): void {
-            state.popUpTitle = titleText;
-        },
-
-        setPopUpText(state: {popUpText: string}, popUpText: string): void {
-            state.popUpText = popUpText;
-        },
-
-        setPopUpBtn(state: {popUpBtn: []}, buttons: []): void {
-            state.popUpBtn = buttons
+        setPopUpObj(state: {popUpObj: RestaurantType}, currentPopObj: RestaurantType): void {
+            state.popUpObj = currentPopObj
         }
     },
     actions: {
@@ -44,20 +28,10 @@ export default {
        updatePopUpStatus({commit}, status: boolean): void {
            commit('setPopUpStatus', status)
        },
-
+        
         //@ts-ignore
-        updatePopUpTitle({commit}, title: string): void {
-            commit('setPopUpTitle', title)
-        },
-
-        //@ts-ignore
-        updatePopUpText({commit}, text: string): void {
-            commit('setPopUpText', text)
-        },
-
-        //@ts-ignore
-        updatePopUpBtn({commit}, button: []): void {
-           commit('setPopUpBtn', button)
+        updatePopUpObj({commit}, currentPopObj: RestaurantType): void {
+           commit('setPopUpObj', currentPopObj);
         }
     },
 }
