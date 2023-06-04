@@ -1,14 +1,14 @@
 <template>
     <div class="pop-container">
         <div class="pop-rectangle">
-            <h1 class="pop-title">{{ getPopUpTitle }}</h1>
-            <p class="pop-text">{{ getPopUpText }}</p>
+            <h1 class="pop-title">{{ getPopUpObj['Produs'] }}</h1>
+<!--            <p class="pop-text">{{ getPopUpText }}</p>-->
             <div>
                 <v-btn>
                     Button 1
                 </v-btn>
                 <v-btn style="background-color: red; color: white" @click="updatePopUpStatus(false)">
-                    {{getPopUpBtn.length > 0 ? "<i class='fa-solid fa-circle-xmark' style='color: #ffffff;'></i> Cancel" : "Close" }}
+                    {{getPopUpObj.children.length > 0 ? "<i class='fa-solid fa-circle-xmark' style='color: #ffffff;'></i> Cancel" : "Close" }}
                 </v-btn>
             </div>
         </div>
@@ -27,9 +27,7 @@ export default defineComponent({
     },
     computed: {
         ...mapGetters({
-            getPopUpTitle: "getPopUpTitle",
-            getPopUpText: "getPopUpText",
-            getPopUpBtn: "getPopUpBtn"
+            getPopUpObj: "getPopUpObj"
         })
     }
 })
