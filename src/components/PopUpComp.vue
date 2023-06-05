@@ -2,7 +2,6 @@
     <div class="pop-container">
         <div class="pop-rectangle">
             <h1 class="pop-title">{{ getPopUpObj['Produs'] }}</h1>
-<!--            <p class="pop-text">{{ getPopUpText }}</p>-->
             <div>
                 <v-btn
                     v-show="isPopUpOpenStatus.type === 'approve'"
@@ -75,7 +74,8 @@ export default defineComponent({
 
 .confirm-btn {
     background-color: #3aa856;
-    color: white
+    color: white;
+    margin-right: 0.5rem;
 }
 
 </style>
