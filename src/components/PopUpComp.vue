@@ -4,11 +4,12 @@
             <h1 class="pop-title">{{ getPopUpObj['Produs'] }}</h1>
 <!--            <p class="pop-text">{{ getPopUpText }}</p>-->
             <div>
-                <v-btn>
-                    Button 1
+                <v-btn style="background-color: #3aa856; color: white" v-show="isPopUpOpenStatus.type === 'approve'">
+                    Confirm
                 </v-btn>
                 <v-btn style="background-color: red; color: white" @click="updatePopUpStatus(false)">
-                    {{getPopUpObj.children.length > 0 ? "<i class='fa-solid fa-circle-xmark' style='color: #ffffff;'></i> Cancel" : "Close" }}
+                    <i class='fa-solid fa-circle-xmark' style='color: #ffffff;'/>
+                    {{isPopUpOpenStatus.type === 'approve' ? "Cancel" : "Close" }}
                 </v-btn>
             </div>
         </div>
@@ -27,7 +28,8 @@ export default defineComponent({
     },
     computed: {
         ...mapGetters({
-            getPopUpObj: "getPopUpObj"
+            getPopUpObj: "getPopUpObj",
+            isPopUpOpenStatus: "isPopUpOpenStatus"
         })
     }
 })

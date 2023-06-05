@@ -1,6 +1,6 @@
 <template>
   <pop-up-comp
-      v-if="isPopUpOpen"
+      v-if="isPopUpOpen.status"
       title="Test header"
       text="Test text"
   />

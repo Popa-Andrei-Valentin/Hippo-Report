@@ -97,16 +97,10 @@ export default {
         onClickHandler(option) {
             this.togglePopup();
             this.updatePopUpObj(this.currentRowData);
-            if (option === 'visualize') {
-                console.log("Visualize")
-                this.updatePopUpOpenStatus(true)
-            }
-            if (option === 'approve') {
-                this.updateRowDataAfterCalcul({
-                    id: this.currentRowId,
-                    data: toRaw(this.currentRowData)
-                });
-            }
+            this.updatePopUpOpenStatus({
+                status: true,
+                type: option
+            })
         },
     },
 }
