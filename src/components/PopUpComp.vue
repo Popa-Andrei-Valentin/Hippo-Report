@@ -4,10 +4,16 @@
             <h1 class="pop-title">{{ getPopUpObj['Produs'] }}</h1>
 <!--            <p class="pop-text">{{ getPopUpText }}</p>-->
             <div>
-                <v-btn style="background-color: #3aa856; color: white" v-show="isPopUpOpenStatus.type === 'approve'">
+                <v-btn
+                    v-show="isPopUpOpenStatus.type === 'approve'"
+                    class="confirm-btn"
+                >
                     Confirm
                 </v-btn>
-                <v-btn style="background-color: red; color: white" @click="updatePopUpStatus(false)">
+                <v-btn
+                    class="cancel-btn"
+                    @click="updatePopUpStatus(false)"
+                >
                     <i class='fa-solid fa-circle-xmark' style='color: #ffffff;'/>
                     {{isPopUpOpenStatus.type === 'approve' ? "Cancel" : "Close" }}
                 </v-btn>
@@ -60,6 +66,16 @@ export default defineComponent({
 
 .pop-text {
     padding: 30px;
+}
+
+.cancel-btn {
+    background-color: red;
+    color: white
+}
+
+.confirm-btn {
+    background-color: #3aa856;
+    color: white
 }
 
 </style>
