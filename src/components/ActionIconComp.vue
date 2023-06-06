@@ -51,7 +51,7 @@ export default {
         if (this.params.data.children && this.params.data.children.length > 0) this.isRoot = true
 
         this.currentRowId = this.params.rowIndex;
-        this.currentRowData = this.params.data
+        this.currentRowData = this.params
 
         this.tippyInstance = tippy(this.$refs.trigger);
         this.tippyInstance.disable();

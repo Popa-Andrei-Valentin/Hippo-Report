@@ -17,6 +17,7 @@
                 <v-btn
                     v-show="isPopUpOpenStatus.type === 'approve'"
                     class="confirm-btn"
+                    @click="confirmAction"
                 >
                     Confirm
                 </v-btn>
@@ -36,6 +37,7 @@
 import { defineComponent } from 'vue'
 import {mapActions, mapGetters} from "vuex";
 import {VDataTableVirtual} from "vuetify/labs/VDataTable";
+import {toRaw} from "vue";
 
 export default defineComponent({
     data(){
@@ -45,9 +47,8 @@ export default defineComponent({
         }
     },
     beforeMount() {
-
       // Assign headers.
-        Object.keys(this.getPopUpObj.children[0]).map((header: string) => {
+        Object.keys(this.getPopUpObj.data.children[0]).map((header: string) => {
 
           if (header === "customId" || header === "duplicate") return
 
@@ -61,15 +62,21 @@ export default defineComponent({
         });
 
       // Assign rows.
-        this.tableRows = this.getPopUpObj.children
+        this.tableRows = this.getPopUpObj.data.children
     },
     components:{
       VDataTableVirtual
     },
     methods: {
         ...mapActions({
-            updatePopUpStatus: "updatePopUpStatus"
-        })
+            updatePopUpStatus: "updatePopUpStatus",
+            updateRowDataAfterCalcul: "updateRowDataAfterCalcul"
+        }),
+
+        async confirmAction() {
+            await this.updateRowDataAfterCalcul({id: this.getPopUpObj.rowIndex, data: toRaw(this.getPopUpObj.data) })
+            await this.updatePopUpStatus(false)
+        }
     },
     computed: {
         ...mapGetters({
