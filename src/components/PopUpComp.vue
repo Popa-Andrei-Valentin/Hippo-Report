@@ -3,16 +3,17 @@
         <div class="pop-rectangle">
             <h1 class="pop-title">{{ getPopUpObj['Produs'] }}</h1>
             <div v-if="isPopUpOpenStatus.type === 'approve'">
-                <p>Is the calculus correct ?</p>
               <v-data-table-virtual
                   :headers="columnsDef"
                   :items="tableRows"
-                  class="elevation-1"
-                  height="400"
+                  class="elevation-1 ma-2"
+                  min-height="200"
                   item-value="Produs"
               ></v-data-table-virtual>
+              <p>Is the calculus correct ?</p>
+              <p><b>Total Cantitate:</b> {{getPopUpObj.Cantitate}} <b>Total:</b> {{getPopUpObj.Total}}</p>
             </div>
-            <div>
+            <div class="btns-container">
                 <v-btn
                     v-show="isPopUpOpenStatus.type === 'approve'"
                     class="confirm-btn"
@@ -108,13 +109,17 @@ export default defineComponent({
 
 .cancel-btn {
     background-color: red;
-    color: white
+    color: white;
 }
 
 .confirm-btn {
     background-color: #3aa856;
     color: white;
     margin-right: 0.5rem;
+}
+
+.btns-container {
+  margin-top: 8px;
 }
 
 </style>
