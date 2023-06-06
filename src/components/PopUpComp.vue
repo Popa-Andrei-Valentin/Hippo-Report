@@ -1,7 +1,7 @@
 <template>
     <div class="pop-container">
         <div class="pop-rectangle">
-            <h1 class="pop-title">{{ getPopUpObj['Produs'] }}</h1>
+            <h1 class="pop-title">{{ getPopUpObj.data.Produs }}</h1>
             <div v-if="isPopUpOpenStatus.type === 'approve'">
               <v-data-table-virtual
                   :headers="columnsDef"
@@ -11,7 +11,7 @@
                   item-value="Produs"
               ></v-data-table-virtual>
               <p>Is the calculus correct ?</p>
-              <p><b>Total Cantitate:</b> {{getPopUpObj.Cantitate}} <b>Total:</b> {{getPopUpObj.Total}}</p>
+              <p><b>Total Cantitate:</b> {{getPopUpObj.data.Cantitate}} <b>Total:</b> {{getPopUpObj.data.Total}}</p>
             </div>
             <div class="btns-container">
                 <v-btn
