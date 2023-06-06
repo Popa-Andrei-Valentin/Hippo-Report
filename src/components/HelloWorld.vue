@@ -25,7 +25,7 @@
             :suppressRowHoverHighlight=true
             @gridReady="onGridReady"
             @cellClicked="onCellClicked"
-          ></ag-grid-vue>
+          />
     </div>
   </div>
 </template>

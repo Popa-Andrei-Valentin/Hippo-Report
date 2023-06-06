@@ -2,6 +2,16 @@
     <div class="pop-container">
         <div class="pop-rectangle">
             <h1 class="pop-title">{{ getPopUpObj['Produs'] }}</h1>
+            <div v-if="isPopUpOpenStatus.type === 'approve'">
+                <p>Is the calculus correct ?</p>
+              <v-data-table-virtual
+                  :headers="columnsDef"
+                  :items="tableRows"
+                  class="elevation-1"
+                  height="400"
+                  item-value="Produs"
+              ></v-data-table-virtual>
+            </div>
             <div>
                 <v-btn
                     v-show="isPopUpOpenStatus.type === 'approve'"
@@ -24,8 +34,37 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import {mapActions, mapGetters} from "vuex";
+import {VDataTableVirtual} from "vuetify/labs/VDataTable";
 
 export default defineComponent({
+    data(){
+        return {
+            columnsDef: new Array(),
+            tableRows: new Array()
+        }
+    },
+    beforeMount() {
+
+      // Assign headers.
+        Object.keys(this.getPopUpObj.children[0]).map((header: string) => {
+
+          if (header === "customId" || header === "duplicate") return
+
+          let toAdd = {
+            title: header,
+            align: 'start',
+            sortable: false,
+            key: header,
+          }
+            this.columnsDef.push(toAdd);
+        });
+
+      // Assign rows.
+        this.tableRows = this.getPopUpObj.children
+    },
+    components:{
+      VDataTableVirtual
+    },
     methods: {
         ...mapActions({
             updatePopUpStatus: "updatePopUpStatus"
