@@ -1,7 +1,7 @@
 <template>
   <div class="home-container">
     <div class="info-item">
-      <h1>Home Page</h1>
+      <h1>Process Document</h1>
     </div>
     <div class="file-item">
         <div class="grid-buttons">
