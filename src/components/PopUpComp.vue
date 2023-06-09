@@ -10,8 +10,15 @@
                   min-height="200"
                   item-value="Produs"
               ></v-data-table-virtual>
-              <p>Is the calculus correct ?</p>
-              <p><b>Total Cantitate:</b> {{getPopUpObj.data.Cantitate}} <b>Total:</b> {{getPopUpObj.data.Total}}</p>
+              <h3>Is the calculus correct ?</h3>
+              <div class="total-container">
+                <div class="total-section">
+                  <p>Cantitate:<input class="input-total" v-model="getPopUpObj.data.Cantitate" placeholder="Cantitate" /></p>
+
+                  <p>Total: <input class="input-total" v-model="getPopUpObj.data.Total" placeholder="Total" /></p>
+
+                </div>
+              </div>
             </div>
             <div class="btns-container">
                 <v-btn
@@ -127,6 +134,33 @@ export default defineComponent({
 
 .btns-container {
   margin-top: 8px;
+}
+
+.total-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.total-section {
+  width: auto;
+  text-align: start;
+}
+
+.input-total{
+  min-width: 3ch;
+  max-width: 10ch;
+  background-color: #e3e3e3;
+  text-align: center;
+}
+
+.total-section p {
+  font-weight: bold;
+}
+
+.total-section input {
+  font-weight: normal;
 }
 
 </style>
