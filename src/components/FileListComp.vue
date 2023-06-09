@@ -10,6 +10,11 @@
               text="Download"
               :disabled="isDownloadPossible"
               @click="writeExcel" />
+          <grid-button-animated
+              class="btn"
+              text="Filter"
+              :disabled="isDownloadPossible"
+              @click="setDuplicateFilter" />
         </div>
           <ag-grid-vue
             class="ag-theme-material"
@@ -57,7 +62,9 @@ export default defineComponent({
       // ------- AG-Grid ------- //
       defaultColDef: {
           resizable: true,
-          flex: 1
+          flex: 1,
+          filter: true,
+          sortable: true,
       },
       noRowsOverlay: "<input class='inputOverlay' type='file'/>",
       gridApi: null,
@@ -155,6 +162,7 @@ export default defineComponent({
                       initialObj.customId = Math.floor(Math.random() * (999999 - this.getRowData.length + 1) + this.getRowData.length);
 
                       processedTable[name].children = [initialObj,obj];
+                      processedTable[name].duplicate = true
                     } else {
                         processedTable[name].children?.push(obj);
                     }
@@ -213,6 +221,12 @@ export default defineComponent({
           minWidth: 50,
           cellRenderer: ActionIconComp
       });
+
+      // TODO: Create a constant for action and duplicate columns.
+      columnsDef.push({
+        field: "duplicate",
+        hide: true,
+      })
 
       await this.setNewHeaderData(columnsDef)
     },
@@ -284,7 +298,7 @@ export default defineComponent({
     },
 
     getRowStyle(params: any) {
-        if (params.data.children) {
+        if (params.data.children && params.data.duplicate) {
             return {background: '#ffdd00'}
         }
         if (params.data.duplicate) {
@@ -312,6 +326,25 @@ export default defineComponent({
       } else {
         this.onRowClicked(params);
       }
+    },
+
+    /**
+     * Set filter for Ag-Grid in order to display only duplicate rows (yellow).
+     */
+    setDuplicateFilter() {
+      //@ts-ignore
+      if(Object.keys(this.gridApi.getFilterModel()).length > 0) {
+        //@ts-ignore
+        this.gridApi.setFilterModel({});
+        return
+      }
+      //@ts-ignore
+      this.gridApi.setFilterModel({
+        duplicate: {
+        type: "startsWith",
+        filter: "tr"
+        }
+      })
     }
   },
 })

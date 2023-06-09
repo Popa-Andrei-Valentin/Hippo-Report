@@ -45,7 +45,7 @@ export default {
     },
     mounted() {
         // Disabled action elipsis for nested rows.
-        if (this.params.data.duplicate) this.isDuplicate = true
+        if (this.params.data.duplicate && !this.params.data.children) this.isDuplicate = true
 
         // Enable Confirm Calculus operation only for root rows ( which show nested rows when clicked upon )
         if (this.params.data.children && this.params.data.children.length > 0) this.isRoot = true

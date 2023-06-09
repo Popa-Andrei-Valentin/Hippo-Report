@@ -37,15 +37,16 @@ export default {
         //@ts-ignore
         async updateRowDataAfterCalcul({commit, state}, currentRowObj: {id: number, data: RestaurantType}): void {
             const rowData = toRaw(state.rowData);
+            const index = rowData.findIndex((obj: RestaurantType): boolean => obj === currentRowObj.data);
+            if (index >= 0 && rowData[index] === currentRowObj.data) {
 
-            if (rowData[currentRowObj.id] && rowData[currentRowObj.id] === currentRowObj.data) {
-
-                if (rowData[currentRowObj.id].expanded) {
+                if (rowData[index].expanded) {
                     rowData.splice(currentRowObj.id + 1, rowData[currentRowObj.id].children.length)
                 }
 
-                delete rowData[currentRowObj.id].children
-                delete rowData[currentRowObj.id].expanded
+                delete rowData[index].children
+                delete rowData[index].duplicate
+                delete rowData[index].expanded
 
                 commit("setRowData", []);
                 await nextTick();
