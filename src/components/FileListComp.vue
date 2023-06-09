@@ -178,7 +178,7 @@ export default defineComponent({
      * Export Processed document as excel.
      */
     writeExcel(): void {
-        let worksheet = XLSX.utils.json_to_sheet(this.arrayForExport);
+        let worksheet = XLSX.utils.json_to_sheet(this.getRowData);
 
         let wb = XLSX.utils.book_new();
 
