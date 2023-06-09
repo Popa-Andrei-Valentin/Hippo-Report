@@ -41,7 +41,7 @@ export default {
             if (index >= 0 && rowData[index] === currentRowObj.data) {
 
                 if (rowData[index].expanded) {
-                    rowData.splice(currentRowObj.id + 1, rowData[currentRowObj.id].children.length)
+                    rowData.splice(index + 1, rowData[index].children.length)
                 }
 
                 delete rowData[index].children

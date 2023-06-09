@@ -5,16 +5,14 @@
     </div>
     <div class="file-item">
         <div class="grid-buttons">
+          <v-btn @click="setDuplicateFilter" variant="tonal">
+            Show only duplicates
+          </v-btn>
             <grid-button-animated
               class="btn"
               text="Download"
               :disabled="isDownloadPossible"
               @click="writeExcel" />
-          <grid-button-animated
-              class="btn"
-              text="Filter"
-              :disabled="isDownloadPossible"
-              @click="setDuplicateFilter" />
         </div>
           <ag-grid-vue
             class="ag-theme-material"
@@ -186,7 +184,15 @@ export default defineComponent({
      * Export Processed document as excel.
      */
     writeExcel(): void {
-        let worksheet = XLSX.utils.json_to_sheet(this.getRowData);
+      let worksheet = this.getRowData
+      //TODO: Create better object filtering for download.
+      for (let i = 0; i < worksheet.length; i++) {
+        if (worksheet[i].customId !== undefined) delete worksheet[i].customId
+        if (worksheet[i].children !== undefined) delete worksheet[i].children
+        if (worksheet[i].duplicate !== undefined) delete worksheet[i].duplicate
+        if (worksheet[i] !== undefined) delete worksheet[i].expanded
+      }
+        worksheet = XLSX.utils.json_to_sheet(worksheet);
 
         let wb = XLSX.utils.book_new();
 
