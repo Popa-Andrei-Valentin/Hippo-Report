@@ -117,7 +117,7 @@ export default defineComponent({
         let data = e.target.result;
         let workbook = XLSX.read(data, {type: "binary"});
         workbook.SheetNames.map(sheet => {
-          let rowObj: Array<object> = XLSX.utils.sheet_to_json(workbook.Sheets[sheet])
+          let rowObj: Array<object> = XLSX.utils.sheet_to_json(workbook.Sheets[sheet], {raw: false}) // raw: false => avoid weird decimal parsing.
           if (rowObj && rowObj.length > 0) {
             if(arr.length < 1 || arr.length < rowObj.length) arr = rowObj;
           }
