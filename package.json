@@ -12,6 +12,7 @@
     "ag-grid-vue3": "^29.3.5",
     "core-js": "^3.8.3",
     "filereader": "^0.10.3",
+    "js-big-decimal": "^1.4.1",
     "tippy.js": "^6.3.7",
     "vue": "^3.2.13",
     "vue-class-component": "^8.0.0-0",

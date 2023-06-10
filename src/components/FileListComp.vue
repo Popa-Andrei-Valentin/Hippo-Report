@@ -45,6 +45,7 @@ import gridButtonAnimated from "@/components/GridButtonAnimated.vue";
 import {GridApi, GridOptions} from "ag-grid-community";
 import ActionIconComp from "@/components/ActionIconComp.vue";
 import { mapGetters, mapActions } from "vuex";
+import bigDecimal from "js-big-decimal";
 
 export default defineComponent({
   data () {
@@ -146,7 +147,8 @@ export default defineComponent({
             this.currentFile.map((obj: RestaurantType, index: number) => {
                 obj = toRaw(obj);
                 obj.customId = index;
-                total = obj["Total"] + total
+                //@ts-ignore
+                total = bigDecimal.add(obj["Total"],total)
                 let name = obj["Produs"].toLowerCase()
                 if (verifiedTables.length < 1 || verifiedTables.indexOf(name) === -1) {
                    verifiedTables.push(name);
@@ -165,8 +167,10 @@ export default defineComponent({
                         processedTable[name].children?.push(obj);
                     }
                     processedTable[name].expanded = false;
-                    processedTable[name]["Cantitate"] += obj["Cantitate"]
-                    processedTable[name]["Total"] += obj["Total"]
+                    //@ts-ignore
+                    processedTable[name]["Cantitate"] = bigDecimal.add(obj["Cantitate"], processedTable[name]["Cantitate"])
+                  //@ts-ignore
+                  processedTable[name]["Total"] = bigDecimal.add(obj["Total"], processedTable[name]["Total"])
                 }
             })
         }
@@ -278,7 +282,7 @@ export default defineComponent({
             rowData[i].expanded = !rowData[i].expanded ;
 
               if (rowData[i].expanded) {
-                rowData.splice(i + 1, 0, ...e.data.children)
+                rowData.splice(i+1, 0, ...e.data.children)
               } else {
                 rowData.splice(i+1, e.data.children.length);
               }
