@@ -1,4 +1,5 @@
 import {RestaurantType} from "@/typings/RestaurantType";
+import {Commit} from "vuex";
 
 export default {
     state: {
@@ -24,14 +25,11 @@ export default {
         }
     },
     actions: {
-        //@ts-ignore
-       updatePopUpStatus({commit}, status: { status: boolean, type: string }): void {
-           commit('setPopUpStatus', status)
-       },
-
-        //@ts-ignore
-        updatePopUpObj({commit}, currentPopObj: RestaurantType): void {
-           commit('setPopUpObj', currentPopObj);
+        updatePopUpStatus({commit}: {commit: Commit}, status: { status: boolean, type: string }): void {
+            commit('setPopUpStatus', status)
+        },
+        updatePopUpObj({commit}:{commit: Commit}, currentPopObj: RestaurantType): void {
+            commit('setPopUpObj', currentPopObj);
         }
     },
 }
