@@ -137,9 +137,9 @@ export default defineComponent({
     },
 
     writeFile(arr: object[]) {
-      this.setHeaders(arr[0]);
       this.currentFile.push(...arr);
       this.calculateTotal();
+      this.setHeaders(arr[0]);
     },
 
     /**
@@ -154,6 +154,18 @@ export default defineComponent({
         if (this.currentFile.length > 0) {
             this.currentFile.map((obj: RestaurantType, index: number) => {
                 obj = toRaw(obj);
+                let objEntries = Object.entries(obj);
+
+              /**
+               * Detele empty object keys in order to avoid displaying columns with no info.
+               */
+              objEntries.map(([key, value]: [key:string, value: any]) =>{
+                    if(value === "" || !value){
+
+                      delete obj[key as keyof RestaurantType]
+                    }
+                })
+
                 obj.customId = index;
                 total = bigDecimal.add(obj["Total"],total)
                 let name = obj["Produs"].toLowerCase()
