@@ -166,10 +166,9 @@ export default defineComponent({
                         processedTable[name].children?.push(obj);
                     }
                     processedTable[name].expanded = false;
-                    //@ts-ignore
+
                     processedTable[name]["Cantitate"] = bigDecimal.add(obj["Cantitate"], processedTable[name]["Cantitate"])
-                  //@ts-ignore
-                  processedTable[name]["Total"] = bigDecimal.add(obj["Total"], processedTable[name]["Total"])
+                    processedTable[name]["Total"] = bigDecimal.add(obj["Total"], processedTable[name]["Total"])
                 }
             })
         }

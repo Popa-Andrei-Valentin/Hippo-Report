@@ -1,5 +1,5 @@
 export interface RestaurantType {
-    Cantitate: number,
+    Cantitate: string,
     Categorie: string,
     Grupare: string,
     "Pret unitar": number,
