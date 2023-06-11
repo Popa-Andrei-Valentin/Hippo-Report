@@ -66,7 +66,7 @@ export default defineComponent({
           sortable: true,
       },
       noRowsOverlay: "<input class='inputOverlay' type='file'/>",
-      gridApi: null,
+      gridApi: {} as unknown,
     }
   },
   components: {
@@ -103,19 +103,26 @@ export default defineComponent({
     /**
      * Read file and save it to currentFile variable.
      */
-    async readFile(e: HTMLInputElement) {
+    async readFile(e: Event) {
       this.processFile(e, this.writeFile)
     },
 
     /**
      * Process xlsx/xls files and transform its content to JSON.
      */
-    processFile(e:HTMLInputElement, callback: (arr: object[]) => void) {
-      let file = e.target.files[0];
+    processFile(e:Event, callback: (arr: object[]) => void) {
+      const target = e.target as HTMLInputElement;
+
+      if (!target.files) return
+      let file = target.files[0]
+
       let reader = new FileReader();
-      reader.onload = function (e: any) { // TODO: fix "any" type
+      reader.onload = function (e: ProgressEvent<FileReader>) {
         let arr: object[] = []
+
+        if(!e.target) return;
         let data = e.target.result;
+
         let workbook = XLSX.read(data, {type: "binary"});
         workbook.SheetNames.map(sheet => {
           let rowObj: Array<object> = XLSX.utils.sheet_to_json(workbook.Sheets[sheet], {raw: false}) // raw: false => avoid weird decimal parsing.
@@ -242,7 +249,7 @@ export default defineComponent({
     /**
      * Method that is called by AG-Grid when the grid is ready to be mounted to DOM.
      */
-    onGridReady(params: GridApi<RestaurantType>): void {
+    onGridReady(params: GridOptions<RestaurantType>): void {
         window.addEventListener('error', e => {
             if (e.message === 'ResizeObserver loop limit exceeded') {
                 const resizeObserverErrDiv = document.getElementById(
@@ -259,12 +266,12 @@ export default defineComponent({
                 }
             }
         });
-        // @ts-ignore
+
         this.gridApi = params.api;
 
-        let overlayInput = document.querySelector(".inputOverlay");
-        // @ts-ignore
-        if(overlayInput) overlayInput.addEventListener('change', this.readFile) // TODO: FIX TS ERROR FOR QUERY SELECTOR.
+        let overlayInput = document.querySelector(".inputOverlay") as EventTarget;
+
+        if (overlayInput) overlayInput.addEventListener('change', (e:Event) => this.readFile(e)) // TODO: FIX TS ERROR FOR QUERY SELECTOR.
     },
 
     /**
