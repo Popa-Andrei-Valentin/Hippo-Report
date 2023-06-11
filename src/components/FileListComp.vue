@@ -42,7 +42,7 @@ import {AgGridVue} from "ag-grid-vue3";
 import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-material.css'
 import gridButtonAnimated from "@/components/GridButtonAnimated.vue";
-import {GridApi, GridOptions} from "ag-grid-community";
+import {GridApi, GridOptions, RowClickedEvent} from "ag-grid-community";
 import ActionIconComp from "@/components/ActionIconComp.vue";
 import { mapGetters, mapActions } from "vuex";
 import bigDecimal from "js-big-decimal";
@@ -66,7 +66,7 @@ export default defineComponent({
           sortable: true,
       },
       noRowsOverlay: "<input class='inputOverlay' type='file'/>",
-      gridApi: {} as unknown,
+      gridApi: {} as GridApi ,
     }
   },
   components: {
@@ -266,12 +266,12 @@ export default defineComponent({
                 }
             }
         });
-
+        //@ts-ignore
         this.gridApi = params.api;
 
         let overlayInput = document.querySelector(".inputOverlay") as EventTarget;
 
-        if (overlayInput) overlayInput.addEventListener('change', (e:Event) => this.readFile(e)) // TODO: FIX TS ERROR FOR QUERY SELECTOR.
+        if (overlayInput) overlayInput.addEventListener('change', (e:Event) => this.readFile(e))
     },
 
     /**
@@ -279,7 +279,7 @@ export default defineComponent({
      * Expands/Shrinks nested rows.
      * @param e
      */
-    async onRowClicked(e: any): Promise<void> {
+    async onRowClicked(e: RowClickedEvent): Promise<void> {
       let rowData = this.getRowData
       if (e.data.children && e.data.children.length > 0) {
         for (let i=0; i < rowData.length; i++) {
@@ -294,7 +294,6 @@ export default defineComponent({
 
               await this.setNewRowData(rowData)
 
-              //@ts-ignore
               this.gridApi.setRowData(this.getRowData)
             break
           }
@@ -347,13 +346,10 @@ export default defineComponent({
      * Set filter for Ag-Grid in order to display only duplicate rows (yellow).
      */
     setDuplicateFilter() {
-      //@ts-ignore
       if(Object.keys(this.gridApi.getFilterModel()).length > 0) {
-        //@ts-ignore
         this.gridApi.setFilterModel({});
         return
       }
-      //@ts-ignore
       this.gridApi.setFilterModel({
         duplicate: {
         type: "startsWith",
