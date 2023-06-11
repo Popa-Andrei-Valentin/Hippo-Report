@@ -1,6 +1,7 @@
 import {RestaurantType} from "@/typings/RestaurantType";
 import {HeaderType} from "@/typings/DataTableType";
 import {toRaw, nextTick} from "vue";
+import { Commit } from 'vuex';
 
 export default {
     state: {
@@ -28,20 +29,17 @@ export default {
     actions: {
         /** ------- Rows State------- **/
 
-        // TODO: FIND A TYPE COMMIT / DISPATCH FUNCTIONS.
-        //@ts-ignore
-        setNewRowData({commit}, newData: RestaurantType[]): void {
+        setNewRowData({commit}: { commit: Commit }, newData: RestaurantType[]): void {
             commit("setRowData", newData);
         },
 
-        //@ts-ignore
-        async updateRowDataAfterCalcul({commit, state}, currentRowObj: {id: number, data: RestaurantType}): void {
-            const rowData = toRaw(state.rowData);
+        async updateRowDataAfterCalcul({commit, state}: {commit: Commit, state: {rowData: [], headers: []}}, currentRowObj: {id: number, data: RestaurantType}): Promise<void> {
+            const rowData:RestaurantType[] = toRaw(state.rowData);
             const index = rowData.findIndex((obj: RestaurantType): boolean => obj === currentRowObj.data);
             if (index >= 0 && rowData[index] === currentRowObj.data) {
 
                 if (rowData[index].expanded) {
-                    rowData.splice(index + 1, rowData[index].children.length)
+                    rowData.splice(index + 1, rowData[index].children!.length)
                 }
 
                 delete rowData[index].children
@@ -58,8 +56,8 @@ export default {
         },
 
         /** ------- Headers State------- **/
-        //@ts-ignore
-        setNewHeaderData({commit}, newData: HeaderType[]): void {
+
+        setNewHeaderData({commit}:{ commit: Commit }, newData: HeaderType[]): void {
             commit("setHeadersData", newData)
         }
     },
