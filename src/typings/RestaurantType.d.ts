@@ -6,7 +6,7 @@ export interface RestaurantType {
     Produs: string,
     Promotie: string,
     Sectie: string,
-    Total: number,
+    Total: string,
     children?: Array<RestaurantType>,
     customId?: number,
     expanded?: boolean,

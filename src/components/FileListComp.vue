@@ -54,7 +54,7 @@ export default defineComponent({
       currentFile: new Array(), // TODO: fix this error, "[]" returns "never[]" type which creates another errors.
       arrayForExport: new Array(),
       currExcelTotal: {
-          "TOTAL" : 0
+          "TOTAL" : "0"
       },
       currFileName: "",
 
@@ -141,13 +141,12 @@ export default defineComponent({
     async calculateTotal(): Promise<void> {
         let processedTable: {[key: string]: RestaurantType} = {}
         let verifiedTables: string[] = [];
-        let total = 0;
+        let total = "0";
 
         if (this.currentFile.length > 0) {
             this.currentFile.map((obj: RestaurantType, index: number) => {
                 obj = toRaw(obj);
                 obj.customId = index;
-                //@ts-ignore
                 total = bigDecimal.add(obj["Total"],total)
                 let name = obj["Produs"].toLowerCase()
                 if (verifiedTables.length < 1 || verifiedTables.indexOf(name) === -1) {
