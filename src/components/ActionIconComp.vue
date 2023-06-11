@@ -25,12 +25,11 @@
 
 </template>
 
-<script>
+<script lang="ts">
 import tippy from 'tippy.js';
 import { hideAll } from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
 import { mapActions } from "vuex";
-import { toRaw } from "vue";
 
 export default {
     data() {
