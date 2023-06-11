@@ -200,7 +200,7 @@ export default defineComponent({
         if (worksheet[i].customId !== undefined) delete worksheet[i].customId
         if (worksheet[i].children !== undefined) delete worksheet[i].children
         if (worksheet[i].duplicate !== undefined) delete worksheet[i].duplicate
-        if (worksheet[i] !== undefined) delete worksheet[i].expanded
+        if (worksheet[i].expanded !== undefined) delete worksheet[i].expanded
       }
         worksheet = XLSX.utils.json_to_sheet(worksheet);
 
