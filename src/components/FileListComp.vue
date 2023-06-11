@@ -46,6 +46,7 @@ import {GridApi, GridOptions, RowClickedEvent} from "ag-grid-community";
 import ActionIconComp from "@/components/ActionIconComp.vue";
 import { mapGetters, mapActions } from "vuex";
 import bigDecimal from "js-big-decimal";
+import {RequiredHeaders} from "@/const/GridRequiredColumns.js"
 
 export default defineComponent({
   data () {
@@ -223,25 +224,10 @@ export default defineComponent({
             field: header,
         }
 
-        // if (header === "Sectie") toAdd.cellRenderer = this.addArrowForNestedRows
-
         columnsDef.push(toAdd);
       })
 
-      columnsDef.push({
-          field: "Action",
-          resizable: false,
-          width: 100,
-          maxWidth: 100,
-          minWidth: 50,
-          cellRenderer: ActionIconComp
-      });
-
-      // TODO: Create a constant for action and duplicate columns.
-      columnsDef.push({
-        field: "duplicate",
-        hide: true,
-      })
+      columnsDef.push(...RequiredHeaders);
 
       await this.setNewHeaderData(columnsDef)
     },
@@ -299,16 +285,6 @@ export default defineComponent({
           }
         }
       }
-    },
-
-    /**
-     * Add icon which shows if nested row is expanded/shrunk.
-     */
-    addArrowForNestedRows(param: any){
-        if (Object.prototype.hasOwnProperty.call(param.data, "expanded")) {
-            return `${param.data.expanded ? "-" : "+"} ${param.value}`
-        }
-        return param.value
     },
 
     getRowStyle(params: any) {

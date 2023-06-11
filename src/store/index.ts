@@ -12,9 +12,7 @@ export default createStore({
   actions: {
   },
   modules: {
-    //@ts-ignore
-    // TODO: FIX ACTION<any, {}> error
-    // https://github.com/championswimmer/vuex-persist/issues/132
+    // Posible error to look out for: https://github.com/championswimmer/vuex-persist/issues/132
     gridStore: gridStore,
     popUpStore: popUpStore
   }
