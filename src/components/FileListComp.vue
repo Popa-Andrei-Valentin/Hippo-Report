@@ -68,6 +68,7 @@ export default defineComponent({
       },
       noRowsOverlay: "<input class='inputOverlay' type='file'/>",
       gridApi: {} as GridApi ,
+      columnsDef: new Array(),
     }
   },
   components: {
@@ -139,7 +140,7 @@ export default defineComponent({
     writeFile(arr: object[]) {
       this.currentFile.push(...arr);
       this.calculateTotal();
-      this.setHeaders(arr[0]);
+      this.setHeaders();
     },
 
     /**
@@ -157,12 +158,14 @@ export default defineComponent({
                 let objEntries = Object.entries(obj);
 
               /**
-               * Detele empty object keys in order to avoid displaying columns with no info.
+               * Detele empty object entries in order to avoid displaying columns with no info.
+               * Construct columnsDef for setHeaders function.
                */
               objEntries.map(([key, value]: [key:string, value: any]) =>{
                     if(value === "" || !value){
-
                       delete obj[key as keyof RestaurantType]
+                    } else if (this.columnsDef.indexOf(key) === -1) {
+                      this.columnsDef.push(key)
                     }
                 })
 
@@ -229,19 +232,19 @@ export default defineComponent({
      * Set the column headers for data-table.
      * @param {Object} arr
      */
-    async setHeaders(arr: object) : Promise<void> {
-      let columnsDef = []
-      Object.keys(arr).map((header: string) => {
+    async setHeaders() : Promise<void> {
+      let agGridColumnStructure = []
+      this.columnsDef.map((header: string) => {
         let toAdd: HeaderType = {
             field: header,
         }
 
-        columnsDef.push(toAdd);
+        agGridColumnStructure.push(toAdd);
       })
 
-      columnsDef.push(...RequiredHeaders);
+      agGridColumnStructure.push(...RequiredHeaders);
 
-      await this.setNewHeaderData(columnsDef)
+      await this.setNewHeaderData(agGridColumnStructure)
     },
 
     /**
