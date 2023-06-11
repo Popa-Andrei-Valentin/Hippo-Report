@@ -25,7 +25,7 @@
 
 </template>
 
-<script lang="ts">
+<script>
 import tippy from 'tippy.js';
 import { hideAll } from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
