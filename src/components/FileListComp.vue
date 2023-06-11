@@ -42,7 +42,7 @@ import {AgGridVue} from "ag-grid-vue3";
 import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-material.css'
 import gridButtonAnimated from "@/components/GridButtonAnimated.vue";
-import {GridApi, GridOptions, RowClickedEvent} from "ag-grid-community";
+import {GetRowIdParams, GridApi, GridOptions, RowClickedEvent} from "ag-grid-community";
 import ActionIconComp from "@/components/ActionIconComp.vue";
 import { mapGetters, mapActions } from "vuex";
 import bigDecimal from "js-big-decimal";
@@ -287,7 +287,11 @@ export default defineComponent({
       }
     },
 
-    getRowStyle(params: any) {
+    /**
+     * Function that changes the row background colour if it is a duplicate and has the children element.
+     * @param params
+     */
+    getRowStyle(params: GetRowIdParams<RestaurantType>) {
         if (params.data.children && params.data.duplicate) {
             return {background: '#ffdd00'}
         }
