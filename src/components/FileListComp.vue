@@ -150,7 +150,7 @@ export default defineComponent({
     async calculateTotal(): Promise<void> {
         let processedTable: {[key: string]: RestaurantType} = {}
         let verifiedTables: string[] = [];
-        let total = "0";
+        let total = 0;
 
         if (this.currentFile.length > 0) {
             this.currentFile.map((obj: RestaurantType, index: number) => {
@@ -170,10 +170,15 @@ export default defineComponent({
                 })
 
                 obj.customId = index;
-                total = bigDecimal.add(obj["Total"],total)
+                total = Number(bigDecimal.add(obj["Total"],total))
                 let name = obj["Produs"].toLowerCase()
                 if (verifiedTables.length < 1 || verifiedTables.indexOf(name) === -1) {
-                   verifiedTables.push(name);
+                    verifiedTables.push(name);
+
+                    // TODO: Fix string export for numbers when downloading XLSX.
+                    obj["Cantitate"] = Number(obj["Cantitate"]);
+                    obj["Total"] = Number(obj["Total"]);
+
                     processedTable[name] = obj;
                 } else {
                     obj.duplicate = true;
@@ -190,8 +195,8 @@ export default defineComponent({
                     }
                     processedTable[name].expanded = false;
 
-                    processedTable[name]["Cantitate"] = bigDecimal.add(obj["Cantitate"], processedTable[name]["Cantitate"])
-                    processedTable[name]["Total"] = bigDecimal.add(obj["Total"], processedTable[name]["Total"])
+                    processedTable[name]["Cantitate"] = Number(bigDecimal.add(obj["Cantitate"], processedTable[name]["Cantitate"]))
+                    processedTable[name]["Total"] = Number(bigDecimal.add(obj["Total"], processedTable[name]["Total"]))
                 }
             })
         }
