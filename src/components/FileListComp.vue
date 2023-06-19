@@ -55,7 +55,7 @@ export default defineComponent({
       currentFile: new Array(), // TODO: fix this error, "[]" returns "never[]" type which creates another errors.
       arrayForExport: new Array(),
       currExcelTotal: {
-          "TOTAL" : "0"
+          "TOTAL" : 0
       },
       currFileName: "",
 
