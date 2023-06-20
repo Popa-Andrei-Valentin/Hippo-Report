@@ -6,7 +6,8 @@ import { Commit } from 'vuex';
 export default {
     state: {
         rowData: new Array(),
-        headers: new Array()
+        headers: new Array(),
+        duplicateRows: 0,
     },
     getters: {
         getRowData(state: {rowData: RestaurantType[]}): RestaurantType[] {
@@ -15,11 +16,17 @@ export default {
 
         getHeadersData(state: {headers: HeaderType[]}): HeaderType[] {
             return state.headers;
+        },
+
+        getDuplicateRows(state: {duplicateRows: number }): number {
+            return  state.duplicateRows
         }
     },
     mutations: {
-        setRowData(state: {rowData: RestaurantType[]}, array: RestaurantType[]): void {
+        setRowData(state: {rowData: RestaurantType[], duplicateRows: number}, array: RestaurantType[]): void {
             state.rowData = array;
+
+            state.duplicateRows = state.rowData.filter((obj: RestaurantType) => obj.children && obj.duplicate).length;
         },
 
         setHeadersData(state: {headers: HeaderType[]}, array: HeaderType[]): void {

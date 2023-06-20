@@ -85,14 +85,16 @@ export default defineComponent({
   computed: {
     ...mapGetters({
       getRowData: 'getRowData',
-      getHeadersData: 'getHeadersData'}),
+      getHeadersData: 'getHeadersData',
+      getDuplicateRows: 'getDuplicateRows'
+    }),
 
     /**
      * Computed value used to determine if download button should be disabled.
      * Used for additional buttons on top of Ag-Grid.
      */
     isDownloadPossible(): boolean {
-        return this.getRowData.length < 1
+        return this.getRowData.length < 1 || this.getDuplicateRows > 0
     }
   },
   methods: {
