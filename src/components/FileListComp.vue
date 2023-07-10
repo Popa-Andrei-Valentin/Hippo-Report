@@ -67,7 +67,7 @@ export default defineComponent({
           sortable: true,
       },
       noRowsOverlay: "<input class='inputOverlay' type='file'/>",
-      gridApi: {} as GridApi ,
+      gridApi: {} as GridApi,
       columnsDef: new Array(),
     }
   },
@@ -94,7 +94,7 @@ export default defineComponent({
      * Used for additional buttons on top of Ag-Grid.
      */
     isDownloadPossible(): boolean {
-        return this.getRowData.length < 1 || this.getDuplicateRows > 0
+        return this.getRowData.length < 1
     }
   },
   methods: {
